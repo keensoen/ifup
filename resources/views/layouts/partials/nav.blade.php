@@ -37,7 +37,7 @@
                     @endif
                 </span>
             </div>
-            <img src="{{ URL::to('img/card-backgrounds/cover-2-lg.png') }}" class="cover" alt="cover">
+            <img src="{{ URL::to('img/cover-2-lg.png') }}" class="cover" alt="cover">
             <a href="#" onclick="return false;" class="pull-trigger-btn" data-action="toggle" data-class="list-filter-active" data-target=".page-sidebar" data-focus="nav_filter_input">
                 <i class="fal fa-angle-down"></i>
             </a>
