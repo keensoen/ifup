@@ -1,7 +1,7 @@
 <aside class="page-sidebar">
     <div class="page-logo">
         <a href="{{url('/')}}" class="page-logo-link press-scale-down d-flex align-items-center position-relative" data-toggle="modal" data-target="#modal-shortcut">
-            <img src="{{ URL::to('img/logo.png') }}" alt="SmartAdmin WebApp" aria-roledescription="logo">
+            <img src="{{ URL::to('img/logo.png') }}" alt="iFollowUP" aria-roledescription="logo">
             <span class="page-logo-text mr-1">{{ config('app.name') }}</span>
             <span class="position-absolute text-white opacity-50 small pos-top pos-right mr-2 mt-n2"></span>
             <i class="fal fa-angle-down d-inline-block ml-1 fs-lg color-primary-300"></i>
@@ -18,7 +18,7 @@
             </div>
         </div>
         <div class="info-card">
-            <img src="{{ URL::to('img/demo/avatars/avatar-admin.png') }}" class="profile-image rounded-circle" alt="Dr. Codex Lantern">
+            <img src="{{ URL::to('img/avatar-admin.png') }}" class="profile-image rounded-circle" alt="Profile">
             <div class="info-card-text">
                 <a href="#" class="d-flex align-items-center text-white">
                     <span class="text-truncate text-truncate-sm d-inline-block">

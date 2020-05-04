@@ -115,7 +115,21 @@
         <h1 class="">Member Decision</h1>
     </div>
     <div class="form-row">
-        <div class="col-12 mb-3">
+        <div class="col-4 mb-3">
+            <label class="form-label" for="serivice_interest_id">Member Group <span class="text-danger">*</span></label>
+            <select class="custom-select  @error('member_group_id') is-invalid @enderror" required="" id="member_group_id" name="member_group_id" required>
+                <option value="null">Member</option>
+                @foreach($member_groups as $id => $name)
+                    <option value="{{ $id }}" @if($flag) selected @endif>{{ $name}}</option>
+                @endforeach
+            </select>
+            @error('member_group_id')
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+            @enderror
+        </div>
+        <div class="col-4 mb-3">
             <label class="form-label" for="serivice_interest_id">Service Attended <span class="text-danger">*</span></label>
             <select class="custom-select  @error('service_interest_id') is-invalid @enderror" required="" id="service_interest_id" name="service_interest_id" required>
                 @foreach($service_interests as $id => $service_interest)
@@ -127,6 +141,13 @@
                     {{ $message }}
                 </div>
             @enderror
+        </div>
+        <div class="col-4 mb-3">
+            <label class="form-label" for="login_details">Create Login Details(Only for those with Smartphone)</label>
+            <select class="custom-select id="service_interest_id" name="login_details">
+                <option value="false" selected="true">NO</option>
+                <option value="true" >Yes</option>
+            </select>
         </div>
     </div>
     <div class="panel-tag">

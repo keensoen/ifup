@@ -37,6 +37,7 @@ class Member extends Model
         'workforce_interest',
         'availability',
         'member_link',
+        'member_group_id',
         'photo',
         'slug',
     ];

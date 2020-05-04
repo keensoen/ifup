@@ -12,6 +12,7 @@ use App\Entities\Salutation;
 use App\Entities\PrayerRequest;
 use App\Entities\MemberComment;
 use App\Entities\ServiceInterest;
+use App\Entities\MemberGroup;
 use Illuminate\Http\Request;
 use App\Http\Requests\MemberRequestForm;
 
@@ -55,11 +56,18 @@ class MemberController extends Controller
     public function create()
     {
         $flag = false;
+
+        $member_groups = [];
+
+        $modelMemberGroup = MemberGroup::orderBy('name', 'asc');
+        foreach(authRole($modelMemberGroup, auth()->user()) as $m) {
+            $member_groups[$m->id] = Str::upper($m->name);
+        }
         
         $salutations = Salutation::pluck('short_code', 'id')->all();
         $service_interests = ServiceInterest::pluck('name', 'id')->all(); 
 
-        return view('member.create', compact('salutations', 'service_interests', 'flag'));
+        return view('member.create', compact('salutations', 'service_interests', 'flag', 'member_groups'));
     }
 
     public function store(MemberRequestForm $request)
