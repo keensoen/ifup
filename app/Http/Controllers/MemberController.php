@@ -6,6 +6,7 @@ use DB;
 use Str;
 use Arr;
 use Image;
+use App\User;
 use Carbon\Carbon;
 use App\Entities\Member;
 use App\Entities\Salutation;
@@ -15,6 +16,7 @@ use App\Entities\ServiceInterest;
 use App\Entities\MemberGroup;
 use Illuminate\Http\Request;
 use App\Http\Requests\MemberRequestForm;
+use Illuminate\Support\Facades\Hash;
 
 class MemberController extends Controller
 {
@@ -142,6 +144,18 @@ class MemberController extends Controller
                 $commentData = Arr::only($input, 'comment');
                 $data = Arr::add($commentData, 'member_id', $member['id'], 'organization_id', auth()->user()->organization_id);
                 MemberComment::create($data);
+            }
+
+            if($request->create_login && $member) {
+                $user = new User;
+                $user->member_id = $member->id;
+                $user->organization_id = $member->organization_id;
+                $user->username = $member->code;
+                $user->email = $member->email ? $member->email : '';
+                $user->password = Hash::make('password');
+                $user->photo = $member->photo;
+                $user->save();
+
             }
         });
 
