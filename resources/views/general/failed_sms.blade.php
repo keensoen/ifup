@@ -76,7 +76,7 @@
                                         @else
                                             {{ $item['content'] }} 
                                             <br/>
-                                            <span class="badge badge-danger">{{ date('d-m-Y h:m:s', strtotime($item['created_at'])) }}</span>
+                                            <span class="badge badge-danger">{{ date('d-m-Y h:i:s', strtotime($item['created_at'])) }}</span>
                                         @endif
                                     </td>
                                     <td style="text-align:center;"> 
@@ -84,6 +84,9 @@
                                             <span class="badge badge-success"> Sent </span>
                                         @else
                                             <span class="badge badge-danger"> Failed </span>
+                                            <a href="{{ route('resend_sms', ['member' => $item->member->id, 'date' => ($item->created_at)->format('Y-m-d')])}}" class="btn btn-info btn-xs btn-icon rounded-circle">
+                                                <i class="fal fa-exchange"></i>
+                                            </a>
                                         @endif
                                     </td>
                                 </tr>

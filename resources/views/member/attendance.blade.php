@@ -50,45 +50,20 @@
                                         </td>
                                         <td>
                                             @push('js')
-                                                <script>
-                                                  const KEY = "AIzaSyB6S7aOQ9zNQyn57BzqoCKbQKQN7gwCAlY";
-                                                  const LAT = {{ $item->latitude }};
-                                                  const LNG = {{ $item->longitude }};
-                                                  let url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${LAT},${LNG}&key=${KEY}`;
-                                                  fetch(url)
-                                                    .then(response => response.json())
-                                                    .then(data => {
-                                                      console.log(data);
-                                                      let parts = data.results[0].address_components;
-                                                      document.body.insertAdjacentHTML(
-                                                        "beforeend",
-                                                        `<p>Formatted: ${data.results[0].formatted_address}</p>`
-                                                      );
-                                                      parts.forEach(part => {
-                                                        if (part.types.includes("country")) {
-                                                          //we found "country" inside the data.results[0].address_components[x].types array
-                                                          document.body.insertAdjacentHTML(
-                                                            "beforeend",
-                                                            `<p>COUNTRY: ${part.long_name}</p>`
-                                                          );
-                                                        }
-                                                        if (part.types.includes("administrative_area_level_1")) {
-                                                          document.body.insertAdjacentHTML(
-                                                            "beforeend",
-                                                            `<p>PROVINCE: ${part.long_name}</p>`
-                                                          );
-                                                        }
-                                                        if (part.types.includes("administrative_area_level_3")) {
-                                                          document.body.insertAdjacentHTML(
-                                                            "beforeend",
-                                                            `<p>LEVEL 3: ${part.long_name}</p>`
-                                                          );
-                                                        }
-                                                      });
+                                                <script type="text/javascript">
+                                                    const KEY = "AIzaSyB6S7aOQ9zNQyn57BzqoCKbQKQN7gwCAlY";
+                                                    const LAT = {{ $item->latitude }};
+                                                    const LNG = {{ $item->longitude }};
+                                                    let url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${LAT},${LNG}&key=${KEY}`;
+                                                    fetch(url)
+                                                        .then(response => response.json())
+                                                        .then(data => {
+                                                            $('#address').append(data.results[0].formatted_address);
                                                     })
                                                     .catch(err => console.warn(err.message));
                                                 </script>
                                             @endpush
+                                            <div id="address"></div>
                                         </td>
                                         <td>{{ \Carbon\Carbon::parse($item->created_at)->format('h:i a') }}</td>
                                         <td>{{ $item->created_at->format('d-m-Y') }}</td>
@@ -209,4 +184,5 @@
         return decodeURIComponent(results[2].replace(/\+/g, " "));
     }
 </script>
+
 @endpush

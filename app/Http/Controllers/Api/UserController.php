@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth; 
 use App\Http\Resources\UserResource;
+use Illuminate\Support\Facades\Route;
 use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
@@ -16,6 +17,36 @@ class UserController extends Controller
     CONST HTTP_OK = Response::HTTP_OK;
     CONST HTTP_CREATED = Response::HTTP_CREATED;
     CONST HTTP_UNAUTHORIZED = Response::HTTP_UNAUTHORIZED;
+
+   public function signIn(Request $request) {
+
+	    $input = $this->validate($request, [
+	        'username' => 'required|exists:users,username',
+	        'password' => 'required|min:6',
+	    ], [
+	        'username.exists' => 'The user credentials were incorrect.',
+	    ]);
+
+	    request()->request->add([
+	        'grant_type' => 'password',
+	        'client_id' => env('PASSWORD_CLIENT_ID'),
+	        'client_secret' => env('PASSWORD_CLIENT_SECRET'),
+	        'username' => $input['username'],
+	        'password' => $input['password'],
+	    ]);
+
+	    $response = Route::dispatch(Request::create('/oauth/token', 'POST'));
+	    $data = json_decode($response->getContent(), true);
+	    if (!$response->isOk()) {
+	        return response()->json($data, 401);
+	    }
+	    return $data;
+	}
+
+	public function logout(Request $request) 
+	{
+		$request->user()->token()->revoke();
+	}
 
     public function login(Request $request){ 
 
@@ -66,7 +97,10 @@ class UserController extends Controller
 
     public function get_http_response( string $status = null, $data = null, $response ){
 
-        return response()->json($data, $response);
+        return response()->json([
+        	'status'	=> $status,
+        	'data'	=>	$data
+        ], $response);
     }
 
     public function get_user_token( $user, string $token_name = null ) {

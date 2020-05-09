@@ -146,15 +146,24 @@ class MemberController extends Controller
                 MemberComment::create($data);
             }
 
-            if($request->create_login && $member) {
-                $user = new User;
+            if($input['login_details'] && $member) {
+
+                $password = '123456';
+
+                $user = new User();
                 $user->member_id = $member->id;
                 $user->organization_id = $member->organization_id;
                 $user->username = $member->code;
                 $user->email = $member->email ? $member->email : '';
-                $user->password = Hash::make('password');
+                $user->password = Hash::make($password);
                 $user->photo = $member->photo;
                 $user->save();
+
+                if($user) {
+                    $message = 'Good day Sir/Ma. Download ifup app via play store or apple store. Your login details is: username: '.$member->code.' Password: 123456. God bless you.';
+
+                    sendRegistrationSMS($member->id, $message);
+                }
 
             }
         });

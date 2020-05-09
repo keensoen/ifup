@@ -226,4 +226,13 @@ class SmsLogController extends Controller
         
         return view('general.external_sms', compact('logs'));
     }
+
+    public function resendSMS() 
+    {
+        $member = request()->get('member');
+        $date = request()->get('date');
+        resendSMS($member, $date);
+
+        return redirect()->back();
+    }
 }

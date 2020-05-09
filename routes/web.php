@@ -147,9 +147,8 @@ Route::prefix('sms-report')->group(function(){
     Route::get('sent', 'SmsLogController@sentSMS')->name('sent_sms');
     Route::get('failed', 'SmsLogController@failedSMS')->name('failed_sms');
     Route::get('external', 'SmsLogController@externalSMS')->name('external_sms');
+    Route::get('resend', 'SmsLogController@resendSMS')->name('resend_sms');
 });
-
-
 
 //Report routes
 Route::prefix('members')->group(function() {

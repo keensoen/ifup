@@ -213,6 +213,12 @@ class AppController extends Controller
 
     public function get_http_response( string $status = null, $data = null, $response ){
 
-        return response()->json($data, $response);
+        return response()->json(
+            [
+                'status'    => $status,
+                'data'  =>  $data
+            ], 
+            $response
+        );
     }
 }

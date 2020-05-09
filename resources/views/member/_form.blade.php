@@ -118,7 +118,6 @@
         <div class="col-4 mb-3">
             <label class="form-label" for="serivice_interest_id">Member Group <span class="text-danger">*</span></label>
             <select class="custom-select  @error('member_group_id') is-invalid @enderror" required="" id="member_group_id" name="member_group_id" required>
-                <option value="null">Member</option>
                 @foreach($member_groups as $id => $name)
                     <option value="{{ $id }}" @if($flag) selected @endif>{{ $name}}</option>
                 @endforeach
@@ -144,7 +143,7 @@
         </div>
         <div class="col-4 mb-3">
             <label class="form-label" for="login_details">Create Login Details(Only for those with Smartphone)</label>
-            <select class="custom-select id="service_interest_id" name="login_details">
+            <select class="custom-select" id="login_details" name="login_details">
                 <option value="false" selected="true">NO</option>
                 <option value="true" >Yes</option>
             </select>

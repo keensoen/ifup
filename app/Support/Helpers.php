@@ -145,6 +145,137 @@ if(!function_exists('sendSMSx')) {
     }
 }
 
+if(!function_exists('sendRegistrationSMS')) {
+
+    function sendRegistrationSMS($member, $message) 
+    {
+        //dd($recipients);
+
+        $member = Member::whereId($member)->first();
+
+        $gateway = SmsGateway::whereOrganizationId($member['organization_id'])->first();
+
+        $baseurl = $gateway['url'];
+        $sender = $gateway['sender_id'];
+
+        $recipient = $member['tel'];
+
+        $msg = $message.' Welcome to '.$gateway['signature'];
+
+        if(!is_null($gateway['token'])) {
+            $sms_array = [
+                'sender' => $sender,
+                'to' => $recipient,
+                'message' => $msg,
+                'type' => $gateway['type'],
+                'routing' => $gateway['routing'],
+                'token' => $gateway['token']
+            ];
+            $params = http_build_query($sms_array);
+        }
+        else{
+            $username = $gateway['username'];
+            $password = $gateway['password'];
+
+            $sms_array = [
+                'username' => $username,
+                'password' => $password,
+                'sender' => $sender,
+                'recipient' => $recipient,
+                'message' => $msg
+            ];
+
+            $params = http_build_query($sms_array);
+        }
+        
+        
+        $res = curl_get_contents($baseurl, $sms_array);
+        
+        if(Str::contains($res, 'Completed Successfully')) {
+            SmsLog::create([
+                'member_id' => $member['id'],
+                'organization_id'   => $member['organization_id'],
+                'content'   => $msg,
+                'status'    => true
+            ]);
+        }
+        else{
+            SmsLog::create([
+                'member_id' => $member['id'],
+                'organization_id'   => $member['organization_id'],
+                'content'   => $msg,
+                'status'    => false
+            ]);
+        }
+    }
+}
+
+if(!function_exists('resendSMS')) {
+
+    function resendSMS($id, $date=null) 
+    {
+
+        $member = Member::whereId($id)->first();
+
+        $gateway = SmsGateway::whereOrganizationId($member['organization_id'])->first();
+
+        $baseurl = $gateway['url'];
+        $sender = $gateway['sender_id'];
+        $recipient = $member['tel'];
+
+
+        $msg = null;
+        $params = null;
+        $createDate = $date;
+
+        $message = SmsLog::whereMember_id($member['id'])->whereDate('created_at', '=', $createDate)->first();
+
+        if(is_null($message['sms_template_id'])) {
+            $msg = $message['content'];
+        }
+        else {
+            $msg = SmsTemplate::whereSmsTemplateId($message['sms_template_id'])->pluck('msg_temp')->first();
+        }
+        
+        $msgz = $msg.' '.$gateway['signature'];
+
+        if(!is_null($gateway['token'])) {
+            $sms_array = [
+                'sender' => $sender,
+                'to' => $recipient,
+                'message' => $msgz,
+                'type' => $gateway['type'],
+                'routing' => $gateway['routing'],
+                'token' => $gateway['token']
+            ];
+            $params = http_build_query($sms_array);
+        }
+        else{
+            $username = $gateway['username'];
+            $password = $gateway['password'];
+
+            $sms_array = [
+                'username' => $username,
+                'password' => $password,
+                'sender' => $sender,
+                'recipient' => $recipient,
+                'message' => $msgz
+            ];
+
+            $params = http_build_query($sms_array);
+        }
+        
+        
+        $res = curl_get_contents($baseurl, $sms_array);
+        
+        if(Str::contains($res, 'Completed Successfully')){
+            $message->status = true;
+            $message->save();
+        }
+        
+    }
+}
+
 if(!function_exists('sendSmsPost')) {
 
     function sendSmsPost()
@@ -167,7 +298,7 @@ if(!function_exists('sendSmsPost')) {
         $ch = curl_init(); 
 
         curl_setopt($ch, CURLOPT_URL,$baseurl);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
@@ -198,5 +329,25 @@ if(!function_exists('sendSmsGet')) {
 
         echo $response;
 
+    }
+}
+
+if(!function_exists('curl_get_contents')) {
+    function curl_get_contents($baseurl, $params)
+    {
+
+        $ch = curl_init(); 
+        curl_setopt($ch, CURLOPT_URL,$baseurl);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+
+        $response = curl_exec($ch);
+
+        curl_close($ch);
+
+        return $response;
     }
 }
