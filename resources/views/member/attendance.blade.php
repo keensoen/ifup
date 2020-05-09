@@ -52,18 +52,25 @@
                                             @push('js')
                                                 <script type="text/javascript">
                                                     var KEY = "AIzaSyB6S7aOQ9zNQyn57BzqoCKbQKQN7gwCAlY";
-                                                    var LAT = {{ $item->latitude }};
-                                                    var LNG = {{ $item->longitude }};
-                                                    var url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${LAT},${LNG}&key=${KEY}`;
+                                                    var total = {{$item->count()}};
+                                                    var i = 0;
+
+                                                    var url = `https://maps.googleapis.com/maps/api/geocode/json?latlng={{ $item->latitude }},{{ $item->longitude }}&key=${KEY}`;
+                                                    var text = null;
                                                     fetch(url)
                                                         .then(response => response.json())
                                                         .then(data => {
-                                                            $('#address').append(data.results[0].formatted_address);
-                                                    })
+                                                           i++
+                                                           $('#address'+i+'').append(data.results[0].formatted_address)
+                                                           console.log(i);
+                                                        }
+                                                    )
                                                     .catch(err => console.warn(err.message));
+
+                                                    //console.log(res);
                                                 </script>
                                             @endpush
-                                            <div id="address"></div>
+                                            <div id="address{{$i++}}"></div>
                                         </td>
                                         <td>{{ \Carbon\Carbon::parse($item->created_at)->format('h:i a') }}</td>
                                         <td>{{ $item->created_at->format('d-m-Y') }}</td>
