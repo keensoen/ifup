@@ -56,13 +56,11 @@
                                                     var i = 0;
 
                                                     var url = `https://maps.googleapis.com/maps/api/geocode/json?latlng={{ $item->latitude }},{{ $item->longitude }}&key=${KEY}`;
-                                                    var text = null;
                                                     fetch(url)
                                                         .then(response => response.json())
                                                         .then(data => {
                                                            i++
                                                            $('#address'+i+'').append(data.results[0].formatted_address)
-                                                           console.log(i);
                                                         }
                                                     )
                                                     .catch(err => console.warn(err.message));

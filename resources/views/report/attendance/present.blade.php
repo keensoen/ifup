@@ -78,7 +78,28 @@
                                         @endif
                                         {{ $item->member['fullname'] }}
                                     </td>
-                                    <td>{{ $item['latitude'] }} {{ $item['longitude'] }}</td>
+                                    <td>
+                                        @push('js')
+                                            <script type="text/javascript">
+                                                var KEY = "AIzaSyB6S7aOQ9zNQyn57BzqoCKbQKQN7gwCAlY";
+                                                var total = {{$item->count()}};
+                                                var i = 0;
+
+                                                var url = `https://maps.googleapis.com/maps/api/geocode/json?latlng={{ $item->latitude }},{{ $item->longitude }}&key=${KEY}`;
+                                                fetch(url)
+                                                    .then(response => response.json())
+                                                    .then(data => {
+                                                       i++
+                                                       $('#address'+i+'').append(data.results[0].formatted_address)
+                                                    }
+                                                )
+                                                .catch(err => console.warn(err.message));
+
+                                                //console.log(res);
+                                            </script>
+                                        @endpush
+                                        <div id="address{{$i++}}"></div>
+                                    </td>
                                     <td>{{ \Carbon\Carbon::parse($item['clock_in'])->format('h:i a') }}</td>
                                     <td> 
                                         {{ date('Y-m-d', strtotime($item->created_at)) }}
