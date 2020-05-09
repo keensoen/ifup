@@ -51,10 +51,10 @@
                                         <td>
                                             @push('js')
                                                 <script type="text/javascript">
-                                                    const KEY = "AIzaSyB6S7aOQ9zNQyn57BzqoCKbQKQN7gwCAlY";
-                                                    const LAT = {{ $item->latitude }};
-                                                    const LNG = {{ $item->longitude }};
-                                                    let url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${LAT},${LNG}&key=AIzaSyB6S7aOQ9zNQyn57BzqoCKbQKQN7gwCAlY`;
+                                                    var KEY = "AIzaSyB6S7aOQ9zNQyn57BzqoCKbQKQN7gwCAlY";
+                                                    var LAT = {{ $item->latitude }};
+                                                    var LNG = {{ $item->longitude }};
+                                                    let url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${LAT},${LNG}&key=${KEY}`;
                                                     fetch(url)
                                                         .then(response => response.json())
                                                         .then(data => {
