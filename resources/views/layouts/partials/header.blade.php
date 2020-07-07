@@ -2,7 +2,7 @@
     <!-- we need this logo when user switches to nav-function-top -->
     <div class="page-logo">
         <a href="javascript:void(0);" class="page-logo-link press-scale-down d-flex align-items-center position-relative">
-            <img src="{{ URL::to('img/logo.png') }}" width="50" height="50" alt="iFollowUP" aria-roledescription="logo">
+            <img src="{{ URL::to('img/logo.png') }}" style="width:100px;height:50px;" alt="iFollowUP" aria-roledescription="logo">
             <span class="position-absolute text-white opacity-50 small pos-top pos-right mr-2 mt-n2"></span>
             <i class="fal fa-angle-down d-inline-block ml-1 fs-lg color-primary-300"></i>
         </a>
