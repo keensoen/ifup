@@ -72,7 +72,7 @@ class HomeController extends Controller
         }
         else {
             $totalMembers = Member::whereMonth('created_at', $month)->whereOrganizationId(auth()->user()->organization_id)->count();
-            $totalUsers = User::whereOrganizationId(auth()->user()->organization_id)->count();
+            $totalUsers = User::whereOrganizationId(auth()->user()->organization_id)->whereHas('roles', function($q){ $q->where('roles.name', '<>', "Member"); })->count();
             $totalComments = MemberComment::whereMonth('created_at', $month)->whereOrganizationId(auth()->user()->organization_id)->count();
             $totalPrayers = PrayerRequest::whereMonth('created_at', $month)->whereOrganizationId(auth()->user()->organization_id)->count();
             $totalBirthday = Member::whereMonth('birthday', $month)->whereOrganizationId(auth()->user()->organization_id)->count();

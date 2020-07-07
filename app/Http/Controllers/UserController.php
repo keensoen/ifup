@@ -56,7 +56,7 @@ class UserController extends Controller
         $input = $request->all();
         $userData = Arr::except($input, ['role']);
 
-        $userData['password'] = Hash::make($request->get('password'));
+        $userData['password'] = bcrypt($request->get('password'));
         $user = User::create($userData);
 
         $user->assignRole($input['role']);

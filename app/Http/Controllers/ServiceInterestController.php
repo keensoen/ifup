@@ -21,6 +21,11 @@ class ServiceInterestController extends Controller
 
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'name'  => ['required', 'unique:service_interests'],
+            'capacity' => ['numeric', 'min:0'],
+        ]);
+
         ServiceInterest::create($request->all());
         return redirect()->route('servicetype');
     }

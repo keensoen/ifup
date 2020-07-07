@@ -23,10 +23,19 @@
                 @endif
                     @csrf
                     <div class="form-group">
-                        <input type="text" id="name" name="name" class="form-control" placeholder="Name" @if(!$flag) value="{{$service_type['name']}}" @endif >
+                        <input type="text" id="name" name="name" class="form-control @error('name') is-invalid @enderror" placeholder="Name" @if(!$flag) value="{{$service_type['name']}}" @endif >
                     </div>
                     <div class="form-group">
                         <input type="text" id="eshort_code" name="short_code" class="form-control" placeholder="Short Code" @if(!$flag) value="{{$service_type['short_code']}}" @endif>
+                    </div>
+                    <div class="form-group">
+                        <input type="number" id="capacity" name="capacity" class="form-control @error('capacity') is-invalid @enderror" placeholder="Capacity" @if(!$flag) value="{{$service_type['capacity']}}" @endif >
+                    </div>
+                    <div class="form-group">
+                        <input type="time" id="starts_at" name="starts_at" class="form-control" placeholder="Start At" @if(!$flag) value="{{$service_type['starts_at']}}" @endif>
+                    </div>
+                    <div class="form-group">
+                        <input type="time" id="ends_at" name="ends_at" class="form-control" placeholder="End At" @if(!$flag) value="{{$service_type['ends_at']}}" @endif >
                     </div>
                 @if($flag)
                     <div class="form-group mb-0 text-right">
@@ -68,7 +77,8 @@
                             <tr>
                                 <th>{{ __('Name') }}</th>
                                 <th>{{ __('Abbreviation') }}</th>
-                                <th>{{ __('Created At') }}</th>
+                                <th>{{ __('Capacity') }}</th>
+                                <th>{{ __('Time') }}</th>
                                 <th width="10" align="center">{{ __('Actions') }}</th>
                             </tr>
                         </thead>
@@ -77,7 +87,10 @@
                                 <tr>
                                     <td>{{ $item['name'] }}</td>
                                     <td>{{ $item['short_code'] }}</td>
-                                    <td>{{ $item['created_at']->format('d-m-Y') }}</td>
+                                    <td>{{ $item['capacity'] }}</td>
+                                    <td>
+                                        {{ $item['starts_at'] }} - {{ $item['ends_at'] }}
+                                    </td>
                                     <td width="10" align="center">
                                         <a href="{{route('servicetype.edit', $item['id'])}}" class="btn btn-info btn-xs btn-icon rounded-circle">
                                             <i class="fal fa-pencil"></i>
@@ -86,7 +99,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="4" align="center">No Record Found!</td>
+                                    <td colspan="5" align="center">No Record Found!</td>
                                 </tr>
                             @endforelse
                         </tbody>

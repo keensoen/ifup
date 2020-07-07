@@ -50,7 +50,7 @@ class SmsLogController extends Controller
     {
         $recipient = null;
         
-        $gateway = SmsGateway::whereId(auth()->user()->organization_id)->select('sender_id', 'signature')->first();
+        $gateway = SmsGateway::whereId(auth()->user()->organization_id)->first();
 
         $signature = $gateway['signature'];
         $sender = $gateway['sender_id'];
@@ -99,18 +99,42 @@ class SmsLogController extends Controller
         elseif($request->get('recipient_check') == 'custom'){
             
             $recipient = $request->manaul_recipient;
-            $baseurl = 'http://justsms.com.ng/components/com_spc/smsapi.php?';
-            $auth='username=dansesu&password=dansesugh&';
-
+            $baseurl = $gateway['url'];
             $recepts = Str::of($recipient)->explode(',');
             $response = null;
 
             try {
                 foreach ($recepts as $key => $number) {
 
-                    $response = Http::get($baseurl.$auth.'sender='.$sender.'&recipient='.$number.'&message='.$message);
+                    if(!is_null($gateway['token'])) {
+                        $sms_array = [
+                            'sender' => $sender,
+                            'to' => $number,
+                            'message' => $msg,
+                            'type' => $gateway['type'],
+                            'routing' => $gateway['routing'],
+                            'token' => $gateway['token']
+                        ];
+                        $params = http_build_query($sms_array);
+                    }
+                    else{
+                        $username = $gateway['username'];
+                        $password = $gateway['password'];
 
-                    if(Str::contains($response, 'OK')){
+                        $sms_array = [
+                            'username' => $username,
+                            'password' => $password,
+                            'sender' => $sender,
+                            'recipient' => $number,
+                            'message' => $msg
+                        ];
+
+                        $params = http_build_query($sms_array);
+                    }
+                    
+                    $res = curl_get_contents($baseurl, $sms_array);
+                    
+                    if(Str::contains($res, 'Completed Successfully')) {
                         NonMemberSmsLog::create([
                             'organization_id'   => auth()->user()->organization_id,
                             'number'    => $number,

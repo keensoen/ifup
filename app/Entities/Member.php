@@ -136,4 +136,9 @@ class Member extends Model
     {
         return $this->hasMany(SmsLog::class);
     }
+
+    public function member_report()
+    {
+        return $this->hasMany(MemberReport::class);
+    }
 }

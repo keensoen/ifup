@@ -99,6 +99,40 @@
                                         <a href='{{ route('comrades.edit', $member['slug']) }}' class='btn btn-sm btn-outline-primary mr-2' title='Edit'>
                                             <i class="fal fa-edit"></i> Edit
                                         </a>
+                                        <a href='javascript:void(0);' data-toggle="modal" data-target=".default-example-modal-right-sm" class='btn btn-sm btn-outline-primary mr-2' title='Feedback'>
+                                            <i class="fal fa-comments"></i> Feedback
+                                        </a>
+                                        <div class="modal fade default-example-modal-right-sm" tabindex="-1" role="dialog" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-right modal-sm">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title h4">ADD VISIT FEEDBACK</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true"><i class="fal fa-times"></i></span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="card mb-g">
+                                                            <div class="card-body p-3">
+                                                                <div class="row fs-b fw-300">
+                                                                    <form method="GET" action="{{ route('visit_feedback') }}" autocomplete="off">
+                                                                        @csrf
+                                                                        <input type="hidden" name="member_id" id="member_id" value="{{ $member['id'] }}">
+                                                                        <div class="form-group">
+                                                                            <textarea name="comment" id="comment" cols="30" rows="10" class="form-control js-summernote @error('comment') is-invalid @enderror" placeholder="Visit Feedback"></textarea>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                            <button type="submit" class="btn btn-primary">Save Feedback</button>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     @endif
                                 </div>
                                 <hr />
@@ -110,7 +144,7 @@
                                         <h4>Dependent List</h4>
                                     </div>
                                     <div class="card-body pb-0 px-4">
-                                        <table id="dt-basic-dependent" class="table table-bordered table-hover table-striped">
+                                        <table id="dependent" class="table table-bordered table-hover table-striped">
                                             <thead>
                                                 <th>s/N</th>
                                                 <th>RegNumber</th>
@@ -158,7 +192,7 @@
                                         <h4>Prayer Request List</h4>
                                     </div>
                                     <div class="card-body pb-0 px-4">
-                                        <table id="dt-basic-prayers" class="table table-bordered table-hover table-striped">
+                                        <table id="prayers" class="table table-bordered table-hover table-striped">
                                             <thead>
                                                 <th>s/N</th>
                                                 <th>Prayer Point</th>
@@ -195,7 +229,7 @@
                                         <h4>Comment List</h4>
                                     </div>
                                     <div class="card-body pb-0 px-4">
-                                        <table id="dt-basic-comment" class="table table-bordered table-hover table-striped">
+                                        <table id="comment" class="table table-bordered table-hover table-striped">
                                             <thead>
                                                 <th>s/N</th>
                                                 <th>Comment</th>
@@ -205,7 +239,7 @@
                                                 @forelse($member->comments as $i => $item)
                                                     <tr>
                                                         <td>{{ ++$i }}</td>
-                                                        <td>{{ $item['comment'] }}</td>
+                                                        <td>{!! $item['comment'] !!}</td>
                                                         <td>
                                                             {{ date('d-m-Y h:m:s', strtotime($item['created_at'])) }}
                                                         </td>
@@ -220,6 +254,37 @@
                                     </div>
                                 </div>
                                 <!-- comment - end -->
+                            </div>
+                            <div class="col-lg-12 col-xl-6 order-lg-3 order-xl-2">
+                                <!-- dependents -->
+                                <div class="card mb-g">
+                                    <div class="card-header">
+                                        <h4>Visit Report</h4>
+                                    </div>
+                                    <div class="card-body pb-0 px-4">
+                                        <table id="feedback" class="table table-bordered table-hover table-striped">
+                                            <thead>
+                                                <th>s/N</th>
+                                                <th>Visit Feedback</th>
+                                                <th width="12%">Created At</th>
+                                            </thead>
+                                            <tbody>
+                                                @forelse($member->member_report as $i => $item)
+                                                    <tr>
+                                                        <td>{{ ++$i }}</td>
+                                                        <td>{{ $item['comment'] }}</td>
+                                                        <td>{{ date('jS M, Y', strtotime($item->created_at)) }}</td>
+                                                    </tr>
+                                                @empty
+                                                    <tr>
+                                                        <td colspan="3" style="text-align:center;">Not found!</td>
+                                                    </tr>
+                                                @endforelse
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <!-- dependent- end -->
                             </div>
                             <div class="col-lg-6 col-xl-3 order-lg-2 order-xl-3">
                                 <div class="card mb-g">
@@ -329,16 +394,18 @@
 @endsection
 @push('css')
     <link rel="stylesheet" media="screen, print" href="{{ URL::to('css/datagrid/datatables/datatables.bundle.css') }}">
+    <link rel="stylesheet" media="screen, print" href="{{ URL::to('css/formplugins/summernote/summernote.css') }}">
 @endpush
 
 @push('js')
 <script src="{{ URL::to('js/datagrid/datatables/datatables.bundle.js') }}"></script>
 <script src="{{ URL::to('js/datagrid/datatables/datatables.export.js') }}"></script>
+<script src="{{ URL::to('js/formplugins/summernote/summernote.js') }}"></script>
 <script>
     $(document).ready(function()
     {
         // initialize datatable
-        $('#dt-basic-dependent').dataTable(
+        $('#dependent').dataTable(
         {
             responsive: true,
             dom: "<'row mb-3'<'col-sm-12 col-md-6 d-flex align-items-center justify-content-start'f><'col-sm-12 col-md-6 d-flex align-items-center justify-content-end'lB>>" +
@@ -371,7 +438,7 @@
                 }
             ]
         });
-        $('#dt-basic-prayer').dataTable(
+        $('#feedback').dataTable(
         {
             responsive: true,
             dom: "<'row mb-3'<'col-sm-12 col-md-6 d-flex align-items-center justify-content-start'f><'col-sm-12 col-md-6 d-flex align-items-center justify-content-end'lB>>" +
@@ -404,7 +471,7 @@
                 }
             ]
         });
-        $('#dt-basic-comment').dataTable(
+        $('#prayers').dataTable(
         {
             responsive: true,
             dom: "<'row mb-3'<'col-sm-12 col-md-6 d-flex align-items-center justify-content-start'f><'col-sm-12 col-md-6 d-flex align-items-center justify-content-end'lB>>" +
@@ -436,6 +503,73 @@
                     className: 'btn-outline-primary btn-sm'
                 }
             ]
+        });
+        $('#comment').dataTable(
+        {
+            responsive: true,
+            dom: "<'row mb-3'<'col-sm-12 col-md-6 d-flex align-items-center justify-content-start'f><'col-sm-12 col-md-6 d-flex align-items-center justify-content-end'lB>>" +
+                "<'row'<'col-sm-12'tr>>" +
+                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+            buttons: [
+                {
+                    extend: 'excelHtml5',
+                    text: 'Excel',
+                    titleAttr: 'Generate Excel',
+                    className: 'btn-outline-success btn-sm mr-1'
+                },
+                {
+                    extend: 'csvHtml5',
+                    text: 'CSV',
+                    titleAttr: 'Generate CSV',
+                    className: 'btn-outline-primary btn-sm mr-1'
+                },
+                {
+                    extend: 'copyHtml5',
+                    text: 'Copy',
+                    titleAttr: 'Copy to clipboard',
+                    className: 'btn-outline-primary btn-sm mr-1'
+                },
+                {
+                    extend: 'print',
+                    text: 'Print',
+                    titleAttr: 'Print Table',
+                    className: 'btn-outline-primary btn-sm'
+                }
+            ]
+        });
+
+        $('.js-summernote').summernote(
+        {
+            height: 200,
+            tabsize: 2,
+            placeholder: "Type here...",
+            dialogsFade: true,
+            toolbar: [
+                ['style', ['style']],
+                ['font', ['strikethrough', 'superscript', 'subscript']],
+                ['font', ['bold', 'italic', 'underline', 'clear']],
+                ['fontsize', ['fontsize']],
+                ['fontname', ['fontname']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['height', ['height']]
+                ['table', ['table']],
+                ['insert', ['link', 'picture', 'video']],
+                ['view', ['fullscreen', 'codeview', 'help']]
+            ],
+            callbacks:
+            {
+                //restore from localStorage
+                onInit: function(e)
+                {
+                    $('.js-summernote').summernote("code", localStorage.getItem("summernoteData"));
+                },
+                onChange: function(contents, $editable)
+                {
+                    clearInterval(interval);
+                    timer();
+                }
+            }
         });
     });
 

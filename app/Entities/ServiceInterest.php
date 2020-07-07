@@ -8,6 +8,9 @@ class ServiceInterest extends Model
 {
     protected $fillable = [
     	'name',
-    	'short_code'
+        'short_code',
+        'starts_at',
+        'ends_at',
+        'capacity',
     ];
 }

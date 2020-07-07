@@ -151,7 +151,7 @@
                 </ul>
             </li>
             <li class="{{
-                Request::is('userss') || Request::is('userss/*') ? 'active open' : ''}}">
+                Request::is('miscellaneous') || Request::is('prayer-room/*') ? 'active open' : ''}}">
                 <a href="javascript::void(0)" title="Miscellaneous" data-filter-tags="miscellaneous">
                     <i class="fal fa-globe"></i>
                     <span class="nav-link-text" data-i18n="nav.miscellaneous">Miscellaneous</span>
@@ -162,8 +162,8 @@
                             <span class="nav-link-text" data-i18n="nav.miscellaneous_push_notification">Push Notification</span>
                         </a>
                     </li>
-                    <li class="{{ Request::is('') ? 'active' : ''}}">
-                        <a href="" title="SPrayer Room" data-filter-tags="miscellaneous prayer room">
+                    <li class="{{ Request::is('*/prayer-room') || Request::is('*/prayer-room') ? 'active' : ''}}">
+                        <a href="{{ route('prayer_room') }}" title="Prayer Room" data-filter-tags="miscellaneous prayer room">
                             <span class="nav-link-text" data-i18n="nav.miscellaneous_prayer_room">Prayer Room</span>
                         </a>
                     </li>

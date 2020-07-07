@@ -3,8 +3,7 @@
 use Illuminate\Support\Facades\Http;
 
 Route::get('/', function () {
-    
-    return view('welcome');
+    return redirect()->route('login');
 });
 
 // Route::get('sends', function(){
@@ -122,6 +121,7 @@ Route::post('users/{id}', 'UserController@destroy')->name('user.destroy');
 Route::resource('comrades', 'MemberController');
 Route::get('comrades/{q?}', 'MemberController@index')->name('member_search');
 Route::post('restore-member/{slug}', 'MemberController@restoreMember')->name('m.restore');
+Route::get('visit-feedback', 'MemberController@postVisitFeedback')->name('visit_feedback');
 
 //Service Type routes
 Route::get('memberGroup', 'MemberGroupController@index')->name('memberGroup');
@@ -170,4 +170,9 @@ Route::prefix('analysis')->group(function() {
 Route::prefix('attendance')->group(function() {
     Route::get('present', 'ReportsController@presentMember')->name('present');
     Route::get('absent', 'ReportsController@absentMember')->name('absent');
+});
+
+Route::prefix('miscellaneous')->group(function() {
+    Route::get('present', 'ReportsController@presentMember')->name('present');
+    Route::get('prayer-room', 'MiscellaneousController@prayerRoom')->name('prayer_room');
 });

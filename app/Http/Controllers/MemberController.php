@@ -17,6 +17,7 @@ use App\Entities\MemberGroup;
 use Illuminate\Http\Request;
 use App\Http\Requests\MemberRequestForm;
 use Illuminate\Support\Facades\Hash;
+use App\Entities\MemberReport;
 
 class MemberController extends Controller
 {
@@ -39,7 +40,7 @@ class MemberController extends Controller
         }
 
         if($request->has('q')) {
-            $modelRequest = Member::orderBy('created_at', 'desc')->where('first_name', 'like', '%'.$request->get('q').'%')
+            $modelRequest = Member::orderBy('members.created_at', 'desc')->where('first_name', 'like', '%'.$request->get('q').'%')
                 ->orWhere('middle_name', 'like', '%'.$request->get('q').'%')
                 ->orWhere('surname', 'like', '%'.$request->get('q').'%');
             $members = authRole($modelRequest, auth()->user());
@@ -47,7 +48,7 @@ class MemberController extends Controller
             return view('member.index', compact('members'));
         }
 
-        $model = Member::with(['comments', 'serviceInterest', 'prayers'])->orderBy('created_at', 'desc')
+        $model = Member::with(['comments', 'serviceInterest', 'prayers'])->orderBy('members.created_at', 'desc')
             ->whereDate('created_at', '>=', $date_from)->whereDate('created_at', '<=', $date_to);
 
         $members = authRole($model, auth()->user());
@@ -155,7 +156,7 @@ class MemberController extends Controller
                 $user->organization_id = $member->organization_id;
                 $user->username = $member->code;
                 $user->email = $member->email ? $member->email : '';
-                $user->password = Hash::make($password);
+                $user->password = bcrypt($password);
                 $user->photo = $member->photo;
                 $user->save();
 
@@ -289,5 +290,24 @@ class MemberController extends Controller
         $members = authRole($model, auth()->user());
 
         return view('report.member.archive', compact('members'));
+    }
+
+    public function postVisitFeedback(Request $request)
+    {
+        $this->validate($request, [
+            'comment'   => ['required', 'min:0', 'string'],
+        ]);
+
+        $member = Member::findOrFail($request['member_id']);
+        
+        DB::transaction(function() use($request) {
+            $input = $request->all();
+            $input['organization_id'] = auth()->user()->organization_id;
+            $input['added_by'] = auth()->user()->id;
+
+            MemberReport::create($input);
+        });
+
+        return redirect()->route('comrades.show', $member['slug']);
     }
 }

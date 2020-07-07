@@ -80,30 +80,60 @@ if(!function_exists('autoSendSMS')) {
 
             $gateway = SmsGateway::whereOrganizationId($member['organization_id'])->first();
             $baseurl = $gateway['url'];
-            $sender = $gateway['sender_id'];
-            $auth='&username='.$gateway['username'].'&password='.$gateway['password'];
             $signature = $gateway['signature'];
+            $sender = $gateway['sender_id'];
 
-            $message = $msg_temp['message_temp'].' '.$signature ;
+            if(!is_null($msg_temp)) {
+                $message = $msg_temp['message_temp'].' '.$signature ;
 
-            $response = Http::get($baseurl.$auth.'&sender='.$sender.'&recipient='.$recipient.'&message='.$message);
-            //dd($response);
-            if(Str::contains($response, 'OK')){
-                SmsLog::create([
-                    'member_id' => $member['id'],
-                    'organization_id'   => $member['organization_id'],
-                    'sms_template_id'   => $msg_temp['id'],
-                    'status'    => true
-                ]);
+                if(!is_null($gateway['token'])) {
+                    $sms_array = [
+                        'sender' => $sender,
+                        'to' => $recipient,
+                        'message' => $message,
+                        'type' => $gateway['type'],
+                        'routing' => $gateway['routing'],
+                        'token' => $gateway['token']
+                    ];
+                    $params = http_build_query($sms_array);
+                }
+                else{
+                    $username = $gateway['username'];
+                    $password = $gateway['password'];
+
+                    $sms_array = [
+                        'username' => $username,
+                        'password' => $password,
+                        'sender' => $sender,
+                        'recipient' => $recipient,
+                        'message' => $message
+                    ];
+
+                    $params = http_build_query($sms_array);
+                }
+                
+                $res = curl_get_contents($baseurl, $sms_array);
+                
+                if(Str::contains($res, 'Completed Successfully')) {
+                    SmsLog::create([
+                        'member_id' => $member['id'],
+                        'organization_id'   => $member['organization_id'],
+                        'sms_template_id'   => $msg_temp['id'],
+                        'status'    => true
+                    ]);
+                }
+                else{
+                    SmsLog::create([
+                        'member_id' => $member['id'],
+                        'organization_id'   => $member['organization_id'],
+                        'sms_template_id'   => $msg_temp['id'],
+                        'status'    => false
+                    ]);
+                }
             }
-            else{
-                SmsLog::create([
-                    'member_id' => $member['id'],
-                    'organization_id'   => $member['organization_id'],
-                    'sms_template_id'   => $msg_temp['id'],
-                    'status'    => false
-                ]);
-            }  
+            else {
+                echo 'No Template Found';
+            }
         }
     }
 }
@@ -116,16 +146,41 @@ if(!function_exists('sendSMSx')) {
         $gateway = SmsGateway::whereOrganizationId(auth()->user()->organization_id)->first();
 
         $baseurl = $gateway['url'];
-        $auth='&username='.$gateway['username'].'&password='.$gateway['password'];
-
         $msg = $message;
 
         foreach ($recipients as $key => $recept) {
-            $response = Http::get($baseurl.$auth.'&sender='.$sender.'&recipient='.$recept.'&message='.$msg);
 
-            $member = Member::whereTel([$recept])->first();
+            if(!is_null($gateway['token'])) {
+                $sms_array = [
+                    'sender' => $sender,
+                    'to' => $recept,
+                    'message' => $msg,
+                    'type' => $gateway['type'],
+                    'routing' => $gateway['routing'],
+                    'token' => $gateway['token']
+                ];
+                $params = http_build_query($sms_array);
+            }
+            else{
+                $username = $gateway['username'];
+                $password = $gateway['password'];
 
-            if(Str::contains($response, 'OK')){
+                $sms_array = [
+                    'username' => $username,
+                    'password' => $password,
+                    'sender' => $sender,
+                    'recipient' => $recept,
+                    'message' => $msg
+                ];
+
+                $params = http_build_query($sms_array);
+            }
+            
+            $res = curl_get_contents($baseurl, $sms_array);
+
+             $member = Member::whereTel([$recept])->first();
+            
+            if(Str::contains($res, 'Completed Successfully')) {
                 SmsLog::create([
                     'member_id' => $member['id'],
                     'organization_id'   => $member['organization_id'],
