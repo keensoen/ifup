@@ -17,7 +17,7 @@
             <div class="row">
                 <div class="col col-md-6 col-lg-7 hidden-sm-down">
                     <h2 class="fs-xxl fw-500 mt-4 text-white">
-                        Welcome to the world followUp
+                        Welcome to the world iFollowUp
                         <small class="h3 fw-300 mt-3 mb-5 text-white opacity-60">
                             Connecting everyone everywhere!!!
                         </small>
