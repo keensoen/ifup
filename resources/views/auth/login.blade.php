@@ -71,10 +71,7 @@
                                 </div>
                             </div>
                             <div class="row no-gutters">
-                                <div class="col-lg-6 pr-lg-1 my-2">
-                                    <button type="reset" class="btn btn-info btn-block btn-md">Sign in with <i class="fab fa-google"></i></button>
-                                </div>
-                                <div class="col-lg-6 pl-lg-1 my-2">
+                                <div class="col-lg-12 pl-lg-1 my-2">
                                     <button id="js-login-btn" type="submit" class="btn btn-danger btn-block btn-md">Secure login</button>
                                 </div>
                             </div>
