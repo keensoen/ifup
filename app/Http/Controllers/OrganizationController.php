@@ -6,6 +6,7 @@ use Str;
 use Image;
 use App\Entities\Organization;
 use Illuminate\Http\Request;
+use App\Http\Requests\OrganizationCreateRequest;
 
 class OrganizationController extends Controller
 {
@@ -22,7 +23,7 @@ class OrganizationController extends Controller
         return view('general.organization', compact('organizations', 'flag'));
     }
 
-    public function store(Request $request)
+    public function store(OrganizationCreateRequest $request)
     {
         foreach (auth()->user()->getRoleNames() as $role) {
             if(!$role == 'super-admin'){

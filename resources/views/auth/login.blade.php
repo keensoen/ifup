@@ -79,9 +79,6 @@
                     </div>
                 </div>
             </div>
-            <div class="position-absolute pos-bottom pos-left pos-right p-3 text-center text-white">
-                {{ date('Y') }} © iFollowUP by&nbsp;<a href='https://keensoen.ng' class='text-white opacity-40 fw-500' title='KeennessSolutions' target='_blank'>KeennessSolutions</a>
-            </div>
         </div>
     </div>
 @endsection

@@ -1,7 +1,7 @@
 <head>
     <meta charset="utf-8">
     <title>
-        @yield('page_title') | {{ config('app.name'), 'iFollowUP' }}
+        @yield('page_title') | {{ config('app.name'), 'efellowUP' }}
     </title>
     <meta name="description" content="Analytics Dashboard">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">

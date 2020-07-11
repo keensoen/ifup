@@ -31,7 +31,7 @@ class CreateMembersTable extends Migration
             $table->enum('like_visited', ['Yes', 'No'])->nullable();
             $table->enum('workforce_interest', ['Yes', 'No'])->nullable();
             $table->string('availability', 30)->nullable();
-            $table->foreignId('member_link');
+            $table->foreignId('member_link')->nullable();
             $table->string('photo', 200)->nullable();
             $table->string('slug', 200);
             $table->timestamps();

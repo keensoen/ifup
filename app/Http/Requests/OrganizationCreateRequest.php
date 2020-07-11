@@ -13,7 +13,7 @@ class OrganizationCreateRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,11 @@ class OrganizationCreateRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'general_name'  => ['required', 'string'],
+            'parish'        => ['required', 'string'],
+            'contact_person'=> ['required', 'string'],
+            'phone'         => ['numeric', 'required'],
+            'address'       => ['required']  
         ];
     }
 }

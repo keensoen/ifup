@@ -1,7 +1,7 @@
 <aside class="page-sidebar">
     <div class="page-logo" align="center">
         <a href="{{url('/')}}" class="page-logo-link press-scale-down align-items-center position-relative">
-            <img src="{{ URL::to('img/logo.png') }}" style="width:100px;height:50px;" alt="iFollowUP" aria-roledescription="logo">
+            <img src="{{ URL::to('img/logo.png') }}" style="width:100px;height:50px;" alt="efellowUP" aria-roledescription="logo">
         </a>
     </div>
     <!-- BEGIN PRIMARY NAVIGATION -->
@@ -20,7 +20,7 @@
                 <a href="#" class="d-flex align-items-center text-white">
                     <span class="text-truncate text-truncate-sm d-inline-block">
                         @guest
-                        {{ 'iFollowUP' }}
+                        {{ 'iFUP' }}
                         @else
                             {{ \Str::upper(Auth::user()->username) }}
                         @endguest

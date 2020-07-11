@@ -19,7 +19,7 @@ class MemberRequestForm extends FormRequest
             'middle_name'   => ['nullable', 'alpha', 'max:50'],
             'surname'       => ['required', 'alpha', 'max:50'],
             'birthday'      => ['required'],
-            'tel'           => ['required', 'numeric'],
+            'tel'           => ['required', 'numeric', 'unique:member'],
             'email'         => ['nullable', 'email'],
             'address'       => ['required'],
             'service_interest_id'  => ['required'],

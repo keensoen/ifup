@@ -210,7 +210,24 @@
                             <!-- datatable end -->
                         @else
                             <div class="alert alet-warning text-center">
-                                <span style="font-size:15px;">No record Found! <a href="{{ route('comrades.create') }}"> click here to add</a> <h2>OR</h2> <a href="{{ route('comrades.index') }}">Return to Member Pool</a></span>
+                                <span style="font-size:15px;">No record Found! 
+                                    <a href="{{ route('comrades.create') }}"> click here to add</a> 
+                                    <h2>OR</h2>
+                                    <div class="row text-center" style="align-items:center;">
+                                        <form action="{{ route('import') }}" method="POST" enctype="multipart/form-data">
+                                            @csrf
+                                            <div class="form-group" style="align:center;margin-left:280px;">
+                                                <div class="input-group input-group-multi-transition">
+                                                    <input type="file" readonly="" name="file" class="form-control">
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-xs btn-success">Import Member Data</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <h2>OR</h2>
+                                    <a href="{{ route('comrades.index') }}">Return to Member Pool</a></span>
                             </div>
                         @endif
                     </div>

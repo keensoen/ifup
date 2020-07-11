@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <title>
-            @yield('page_title') | {{ config('app.name', 'iFollowUP') }}
+            @yield('page_title') | {{ config('app.name', 'efellowUP') }}
         </title>
         <meta name="description" content="Login">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -28,7 +28,7 @@
                 <div class="page-content-wrapper bg-transparent m-0">
                     @yield('auth-content')
                     <div class="position-absolute pos-bottom pos-left pos-right p-3 text-center text-white">
-                        {{ date('Y') }} © iFollowUP by&nbsp;<a href='https://keensoen.ng' class='text-white opacity-40 fw-500' title='KeennessSolutions' target='_blank'>KeennessSolutions</a>
+                        {{ date('Y') }} © efellowUP by&nbsp;<a href='https://keensoen.ng' class='text-white opacity-40 fw-500' title='KeennessSolutions' target='_blank'>KeennessSolutions</a>
                     </div>
                 </div>
             </div>

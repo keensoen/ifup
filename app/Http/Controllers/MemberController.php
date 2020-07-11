@@ -18,6 +18,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\MemberRequestForm;
 use Illuminate\Support\Facades\Hash;
 use App\Entities\MemberReport;
+use App\Imports\MembersImport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class MemberController extends Controller
 {
@@ -148,15 +150,12 @@ class MemberController extends Controller
             }
 
             if($input['login_details'] && $member) {
-
-                $password = '123456';
-
                 $user = new User();
                 $user->member_id = $member->id;
                 $user->organization_id = $member->organization_id;
                 $user->username = $member->code;
                 $user->email = $member->email ? $member->email : '';
-                $user->password = bcrypt($password);
+                $user->password = bcrypt($member->tel);
                 $user->photo = $member->photo;
                 $user->save();
 
@@ -246,6 +245,12 @@ class MemberController extends Controller
             $input['workforce_interest'] = Member::checkbox($input['workforce_interest']);
         }
 
+        if(request()->has('address')) {
+            $latLong = getLatLong($request->address);
+            $input['lat'] = $latLong['lat']? $latLong['lat']:'NULL';
+            $input['lng'] = $latLong['lng']? $latLong['lng']:'Not found';
+        }
+
         DB::transaction(function() use($input, $member) {
             $member->update($input);
         });
@@ -309,5 +314,12 @@ class MemberController extends Controller
         });
 
         return redirect()->route('comrades.show', $member['slug']);
+    }
+
+    public function import() 
+    {
+        Excel::import(new MembersImport,request()->file('file'));
+           
+        return back();
     }
 }
