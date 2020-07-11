@@ -1,7 +1,12 @@
 /node_modules
 /public/hot
 /public/storage
+/vendor
+.env
 .env.backup
+.gicopy
+.env.example
+.editorconfig
 .phpunit.result.cache
 Homestead.json
 Homestead.yaml
