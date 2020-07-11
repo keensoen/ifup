@@ -52,132 +52,138 @@ class SmsLogController extends Controller
         
         $gateway = SmsGateway::whereId(auth()->user()->organization_id)->first();
 
-        $signature = $gateway['signature'];
-        $sender = $gateway['sender_id'];
-        $message = $request->get('message').'. '.$signature;
+        if($gateway) 
+        {
+            $signature = $gateway['signature'];
+            $sender = $gateway['sender_id'];
+            $message = $request->get('message').'. '.$signature;
 
-        if($request->get('recipient_check') == 'all') {
+            if($request->get('recipient_check') == 'all') {
 
-            if(auth()->user()->hasRole('supper-admin'))
-            {
-                $recipient = Member::pluck('tel')->all();
-                $sender = 'SuperAdmin';
-                
+                if(auth()->user()->hasRole('supper-admin'))
+                {
+                    $recipient = Member::pluck('tel')->all();
+                    $sender = 'SuperAdmin';
+                    
+                    $sms = sendSMSx($sender, $recipient, $message);
+                    
+                    if($ms) {
+                        return redirect()->back()->with(['success' => 'Thank you! message has been sent successfully']);
+                    }
+                    else {
+                        return redirect()->back()->with(['error' => 'Thank you! message could not sent successfully']);
+                    }     
+                }
+                else {
+                    $recipient = Member::whereOrganizationId(auth()->user()->organization_id)->pluck('tel')->all();
+                    $sms = sendSMSx($sender, $recipient, $message);
+                    
+                    if($ms) {
+                        return redirect()->back()->with(['success' => 'Thank you! message has been sent successfully']);
+                    }
+                    else {
+                        return redirect()->back()->with(['error' => 'Thank you! message could not sent successfully']);
+                    }
+                }
+            }
+            elseif($request->get('recipient_check') == 'member_list') {
+                $recipient = $request->recipient;
+
                 $sms = sendSMSx($sender, $recipient, $message);
-                
-                if($ms) {
+                    
+                if($sms) {
                     return redirect()->back()->with(['success' => 'Thank you! message has been sent successfully']);
                 }
                 else {
                     return redirect()->back()->with(['error' => 'Thank you! message could not sent successfully']);
-                }     
+                }
             }
-            else {
-                $recipient = Member::whereOrganizationId(auth()->user()->organization_id)->pluck('tel')->all();
-                $sms = sendSMSx($sender, $recipient, $message);
+            elseif($request->get('recipient_check') == 'custom'){
                 
-                if($ms) {
+                $recipient = $request->manaul_recipient;
+                $baseurl = $gateway['url'];
+                $recepts = Str::of($recipient)->explode(',');
+                $response = null;
+
+                try {
+                    foreach ($recepts as $key => $number) {
+
+                        if(!is_null($gateway['token'])) {
+                            $sms_array = [
+                                'sender' => $sender,
+                                'to' => $number,
+                                'message' => $message,
+                                'type' => $gateway['type'],
+                                'routing' => $gateway['routing'],
+                                'token' => $gateway['token']
+                            ];
+                            $params = http_build_query($sms_array);
+                        }
+                        else{
+                            $username = $gateway['username'];
+                            $password = $gateway['password'];
+
+                            $sms_array = [
+                                'username' => $username,
+                                'password' => $password,
+                                'sender' => $sender,
+                                'recipient' => $number,
+                                'message' => $message
+                            ];
+
+                            $params = http_build_query($sms_array);
+                        }
+                        
+                        $res = $this->curl_get_contents($baseurl, $params);
+                        
+                        if(Str::contains($res, 'Completed Successfully')) {
+                            NonMemberSmsLog::create([
+                                'organization_id'   => auth()->user()->organization_id,
+                                'number'    => $number,
+                                'content'   => $message,
+                                'user_id'   => auth()->user()->id,
+                                'status'    => true
+                            ]);
+                        }
+                        else{
+                            NonMemberSmsLog::create([
+                                'organization_id'   => auth()->user()->organization_id,
+                                'number'    => $number,
+                                'content'   => $message,
+                                'user_id'   => auth()->user()->id,
+                                'status'    => false
+                            ]);
+                        }
+                    }
+
+                    return redirect()->back()->with(['success' => 'Thank you! message has been sent successfully']);
+                } catch (Throwable $e) {
+                    echo $e;
+
+                    return redirect()->back()->with(['error' => 'Thank you! message has been sent successfully']);
+                }
+
+            }
+            elseif($request->get('recipient_check') == 'member_group') {
+                $contactsFetch = $request->recipient;
+
+                $recipient = Member::whereMemberGroupId([$contactsFetch])->pluck('tel')->all();
+
+                $sms = sendSMSx($sender, $recipient, $message);
+                    
+                if($sms) {
                     return redirect()->back()->with(['success' => 'Thank you! message has been sent successfully']);
                 }
                 else {
                     return redirect()->back()->with(['error' => 'Thank you! message could not sent successfully']);
                 }
             }
-        }
-        elseif($request->get('recipient_check') == 'member_list') {
-            $recipient = $request->recipient;
-
-            $sms = sendSMSx($sender, $recipient, $message);
-                
-            if($sms) {
-                return redirect()->back()->with(['success' => 'Thank you! message has been sent successfully']);
-            }
             else {
-                return redirect()->back()->with(['error' => 'Thank you! message could not sent successfully']);
+                return redirect()->back();
             }
         }
-        elseif($request->get('recipient_check') == 'custom'){
-            
-            $recipient = $request->manaul_recipient;
-            $baseurl = $gateway['url'];
-            $recepts = Str::of($recipient)->explode(',');
-            $response = null;
-
-            try {
-                foreach ($recepts as $key => $number) {
-
-                    if(!is_null($gateway['token'])) {
-                        $sms_array = [
-                            'sender' => $sender,
-                            'to' => $number,
-                            'message' => $message,
-                            'type' => $gateway['type'],
-                            'routing' => $gateway['routing'],
-                            'token' => $gateway['token']
-                        ];
-                        $params = http_build_query($sms_array);
-                    }
-                    else{
-                        $username = $gateway['username'];
-                        $password = $gateway['password'];
-
-                        $sms_array = [
-                            'username' => $username,
-                            'password' => $password,
-                            'sender' => $sender,
-                            'recipient' => $number,
-                            'message' => $message
-                        ];
-
-                        $params = http_build_query($sms_array);
-                    }
-                    
-                    $res = $this->curl_get_contents($baseurl, $params);
-                    
-                    if(Str::contains($res, 'Completed Successfully')) {
-                        NonMemberSmsLog::create([
-                            'organization_id'   => auth()->user()->organization_id,
-                            'number'    => $number,
-                            'content'   => $message,
-                            'user_id'   => auth()->user()->id,
-                            'status'    => true
-                        ]);
-                    }
-                    else{
-                        NonMemberSmsLog::create([
-                            'organization_id'   => auth()->user()->organization_id,
-                            'number'    => $number,
-                            'content'   => $message,
-                            'user_id'   => auth()->user()->id,
-                            'status'    => false
-                        ]);
-                    }
-                }
-
-                return redirect()->back()->with(['success' => 'Thank you! message has been sent successfully']);
-            } catch (Throwable $e) {
-                echo $e;
-
-                return redirect()->back()->with(['error' => 'Thank you! message has been sent successfully']);
-            }
-
-        }
-        elseif($request->get('recipient_check') == 'member_group') {
-            $contactsFetch = $request->recipient;
-
-            $recipient = Member::whereMemberGroupId([$contactsFetch])->pluck('tel')->all();
-
-            $sms = sendSMSx($sender, $recipient, $message);
-                
-            if($sms) {
-                return redirect()->back()->with(['success' => 'Thank you! message has been sent successfully']);
-            }
-            else {
-                return redirect()->back()->with(['error' => 'Thank you! message could not sent successfully']);
-            }
-        }
-        else {
-            return redirect()->back();
+        else{
+            return redirect()->back()->with(['error' => 'Gateway Error' ]);
         }
     }
 
