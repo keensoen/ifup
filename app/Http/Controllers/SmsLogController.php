@@ -110,7 +110,7 @@ class SmsLogController extends Controller
                         $sms_array = [
                             'sender' => $sender,
                             'to' => $number,
-                            'message' => $msg,
+                            'message' => $message,
                             'type' => $gateway['type'],
                             'routing' => $gateway['routing'],
                             'token' => $gateway['token']
@@ -126,13 +126,13 @@ class SmsLogController extends Controller
                             'password' => $password,
                             'sender' => $sender,
                             'recipient' => $number,
-                            'message' => $msg
+                            'message' => $message
                         ];
 
                         $params = http_build_query($sms_array);
                     }
                     
-                    $res = curl_get_contents($baseurl, $sms_array);
+                    $res = $this->curl_get_contents($baseurl, $params);
                     
                     if(Str::contains($res, 'Completed Successfully')) {
                         NonMemberSmsLog::create([
@@ -258,5 +258,23 @@ class SmsLogController extends Controller
         resendSMS($member, $date);
 
         return redirect()->back();
+    }
+
+    public function curl_get_contents($baseurl, $params)
+    {
+
+        $ch = curl_init(); 
+        curl_setopt($ch, CURLOPT_URL,$baseurl);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+
+        $response = curl_exec($ch);
+
+        curl_close($ch);
+
+        return $response;
     }
 }

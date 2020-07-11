@@ -112,7 +112,7 @@ if(!function_exists('autoSendSMS')) {
                     $params = http_build_query($sms_array);
                 }
                 
-                $res = curl_get_contents($baseurl, $sms_array);
+                $res = curl_get_contents($baseurl, $params);
                 
                 if(Str::contains($res, 'Completed Successfully')) {
                     SmsLog::create([
@@ -176,7 +176,7 @@ if(!function_exists('sendSMSx')) {
                 $params = http_build_query($sms_array);
             }
             
-            $res = curl_get_contents($baseurl, $sms_array);
+            $res = curl_get_contents($baseurl, $params);
 
              $member = Member::whereTel([$recept])->first();
             
@@ -244,7 +244,7 @@ if(!function_exists('sendRegistrationSMS')) {
         }
         
         
-        $res = curl_get_contents($baseurl, $sms_array);
+        $res = curl_get_contents($baseurl, $params);
         
         if(Str::contains($res, 'Completed Successfully')) {
             SmsLog::create([
@@ -321,7 +321,7 @@ if(!function_exists('resendSMS')) {
         }
         
         
-        $res = curl_get_contents($baseurl, $sms_array);
+        $res = curl_get_contents($baseurl, $params);
         
         if(Str::contains($res, 'Completed Successfully')){
             $message->status = true;

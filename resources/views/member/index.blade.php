@@ -11,6 +11,21 @@
     </ol>
     <div class="row">
         <div class="col-xl-12">
+            @if ($message = Session::get('success'))
+                <div class="alert alert-success alert-block">
+                    <button type="button" class="close" data-dismiss="alert">×</button>	
+                    <strong>{{ $message }}</strong>
+                </div>
+            @endif
+
+            @if ($message = Session::get('error'))
+                <div class="alert alert-danger alert-block">
+                    <button type="button" class="close" data-dismiss="alert">×</button>	
+                    <strong>{{ $message }}</strong>
+                </div>
+            @endif
+        </div>
+        <div class="col-xl-12">
             <div id="panel-1" class="panel">
                 <div class="panel-container show">
                     <div class="panel-content">
@@ -74,7 +89,13 @@
                                                 <a href="{{ route('comrades.show', $member->slug) }}">{{ $member['fullname'] }}</a>
                                             </td>
                                             <td>{{ $member['tel'] }}</td>
-                                            <td>{{ date('jS M', strtotime($member->birthday)) }}</td>
+                                            <td>
+                                                @if(!is_null($member['birthday']))
+                                                    {{ date('jS M', strtotime($member->birthday)) }}
+                                                @else
+                                                    {{ ('Not Set') }}
+                                                @endif
+                                            </td>
                                             <td>
                                                 @if(!is_null($member['email']) || !empty($member['email']))
                                                     {{ $member['email'] }}
@@ -82,7 +103,13 @@
                                                     {{ ('None') }}
                                                 @endif
                                             </td>
-                                            <td>{{ $member->serviceInterest['short_code'] }}</td>
+                                            <td>
+                                                @if(!is_null($member['service_interest_id']))
+                                                    {{ $member->serviceInterest['short_code'] }}
+                                                @else
+                                                    {{ ('Not Set') }}
+                                                @endif
+                                            </td>
                                             <td style="text-align:center;">
                                                 @if(!is_null($member['member_link']) || !empty($member['member_link']))
                                                     {{ $member->parent['fullname'] }}

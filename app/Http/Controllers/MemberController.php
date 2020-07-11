@@ -19,7 +19,7 @@ use App\Http\Requests\MemberRequestForm;
 use Illuminate\Support\Facades\Hash;
 use App\Entities\MemberReport;
 use App\Imports\MembersImport;
-use Maatwebsite\Excel\Facades\Excel;
+use Excel;
 
 class MemberController extends Controller
 {
@@ -42,7 +42,7 @@ class MemberController extends Controller
         }
 
         if($request->has('q')) {
-            $modelRequest = Member::orderBy('members.created_at', 'desc')->where('first_name', 'like', '%'.$request->get('q').'%')
+            $modelRequest = Member::orderBy('members.code', 'desc')->where('first_name', 'like', '%'.$request->get('q').'%')
                 ->orWhere('middle_name', 'like', '%'.$request->get('q').'%')
                 ->orWhere('surname', 'like', '%'.$request->get('q').'%');
             $members = authRole($modelRequest, auth()->user());
@@ -50,7 +50,7 @@ class MemberController extends Controller
             return view('member.index', compact('members'));
         }
 
-        $model = Member::with(['comments', 'serviceInterest', 'prayers'])->orderBy('members.created_at', 'desc')
+        $model = Member::with(['comments', 'serviceInterest', 'prayers'])->orderBy('members.code', 'desc')
             ->whereDate('created_at', '>=', $date_from)->whereDate('created_at', '<=', $date_to);
 
         $members = authRole($model, auth()->user());
@@ -182,13 +182,22 @@ class MemberController extends Controller
     public function edit($slug)
     {
         $flag = true;
+
+
+        $member_groups = [];
+
+        $modelMemberGroup = MemberGroup::orderBy('name', 'asc');
+        foreach(authRole($modelMemberGroup, auth()->user()) as $m) {
+            $member_groups[$m->id] = Str::upper($m->name);
+        }
+
         $model = Member::with(['comments', 'serviceInterest', 'prayers']);
         $member = authRoleFindWithSlug($model, auth()->user(), $slug);
 
         $salutations = Salutation::pluck('short_code', 'id')->all();
         $service_interests = ServiceInterest::pluck('name', 'id')->all(); 
 
-        return view('member.edit', compact('salutations', 'service_interests', 'member', 'flag'));
+        return view('member.edit', compact('salutations', 'service_interests', 'member', 'member_groups', 'flag'));
     }
 
     public function update(Request $request, $slug)
@@ -246,9 +255,11 @@ class MemberController extends Controller
         }
 
         if(request()->has('address')) {
-            $latLong = getLatLong($request->address);
-            $input['lat'] = $latLong['lat']? $latLong['lat']:'NULL';
-            $input['lng'] = $latLong['lng']? $latLong['lng']:'Not found';
+
+            // $latLong = Member::getLatLong($request->address);
+            // dd($latLong);
+            // $input['lat'] = $latLong['lat']? $latLong['lat']:'NULL';
+            // $input['lng'] = $latLong['lng']? $latLong['lng']:'Not found';
         }
 
         DB::transaction(function() use($input, $member) {
@@ -318,8 +329,19 @@ class MemberController extends Controller
 
     public function import() 
     {
-        Excel::import(new MembersImport,request()->file('file'));
-           
-        return back();
+        // $this->validate(request(), [
+        //     'file' => 'required|mimes:xls,xlsx,csv'
+        // ]);
+
+        if(request()->has('file')){
+
+            $import = Excel::import(new MembersImport, request()->file('file'));
+
+            if ($import) {
+                return redirect()->route('comrades.index')->with('success', 'Members upload successfully!');
+            }
+        }
+
+        return redirect()->route('comrades.index')->with('error', 'An Error has occured!');
     }
 }

@@ -4,72 +4,62 @@ namespace App\Imports;
 
 use Str;
 use App\Entities\Member;
-//use Maatwebsite\Excel\Concerns\ToModel;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Validator;
-use Maatwebsite\Excel\Concerns\ToCollection;
+use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
 
-class MembersImport implements ToCollection, WithHeadingRow, WithBatchInserts
+class MembersImport implements ToModel, WithHeadingRow, WithBatchInserts, WithChunkReading
 {
-    /**
-    * @param array $row
-    *
-    * @return \Illuminate\Database\Eloquent\Model|null
-    */
-    // public function model(array $row)
-    // {
-    //     $this->validate($row, [
-    //         'tel'       => ['unique:members', 'required'],
-    //         'code'      => ['unique:members'],
-    //         'firstname' => ['alpha'],
-    //         'surname'   =>  ['alpha'],
-    //         'birthday'  =>  ['date:Y-m-d']
-    //     ]);
-
-    //     return new Member([ 
-    //         'code'          => $row['code'],
-    //         'organization_id' => $row[1], //not null
-    //         'salutation_id' => $row[2],
-    //         'first_name'    => $row[3],   //not null     
-    //         'middle_name'   => $row[4],
-    //         'surname'       => $row[5],     //not null
-    //         'birthday'      => $row[6],     //not null
-    //         'tel'           => $row[7],     //not null
-    //         'email'         => $row[8],
-    //         'address'       => $row[9],     //not null
-    //     ]);
-    // }
-
-    public function collection(Collection $rows)
+    public function mapping(): array
     {
-         Validator::make($rows->toArray(), [
-            '*.0'       => 'unique:members|required',
-            '*.1'      => 'unique:members',
-            '*.2'   => 'alpha',
-            '*.3'   =>  'alpha',
-            '*.4'  =>  'date:Y-m-d'
-         ])->validate();
+        return [
+            'code' => 'A2',
+            'organization_id' => 'B2',
+            'salutation_id' => 'C2',
+            'first_name' => 'D2',
+            'surname'   => 'E2',
+            'birthday'  => 'F2',
+            'tel'   => 'G2'
+        ];
+    }
 
-        foreach ($rows as $row) {
-            User::create([
-                'code'          => $row['code'],
-                'organization_id' => $row[1], //not null
-                'salutation_id' => $row[2],
-                'first_name'    => $row[3],   //not null     
-                'middle_name'   => $row[4],
-                'surname'       => $row[5],     //not null
-                'birthday'      => $row[6],     //not null
-                'tel'           => $row[7],     //not null
-                'email'         => $row[8],
-                'address'       => $row[9],     //not null
-            ]);
-        }
+    public function model(array $row)
+    {
+        return new Member([ 
+            'code' => $row['code'],
+            'organization_id' => $row['organization_id'],
+            'salutation_id' => $row['salutation_id'],
+            'first_name'    => $row['first_name'],   
+            'surname'       => $row['surname'],
+            'birthday'      => $row['birthday'] ? $this->transformDate($row['birthday']) : NULL,
+            'tel'           => $row['tel'],
+            'member_group_id'   => $row['member_group_id'],
+            'slug'      => Str::slug($row['first_name'].' '.$row['surname'], '-'),
+        ]);
+    }
+
+    public function headingRow(): int
+    {
+        return 1;
     }
 
     public function batchSize(): int
     {
         return 1000;
+    }
+
+    public function chunkSize(): int
+    {
+        return 1000;
+    }
+
+    public function transformDate($value, $format = 'Y-m-d')
+    {
+        try {
+            return \Carbon\Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($value));
+        } catch (\ErrorException $e) {
+            return \Carbon\Carbon::createFromFormat($format, $value);
+        }
     }
 }

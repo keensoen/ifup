@@ -40,7 +40,7 @@
                                                 </h5>
                                                 <div class="mt-4 text-white text-center demo">
                                                     <span>{{ $member->tel }}</span>&nbsp;&nbsp;<span>{{ $member->email }}</span><br />
-                                                    <span>Birthday - {{ date('jS F', strtotime($member->brithday)) }}</span>
+                                                    <span>Birthday - @if(!is_null($member['birthday'])) {{ date('jS F', strtotime($member->brithday)) }} @else {{ ('Not set')}} @endif</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -171,8 +171,8 @@
                                                             {{ $item['fullname'] }}
                                                         </td>
                                                         <td>{{ $item['tel'] }}</td>
-                                                        <td>{{ date('jS M', strtotime($member->birthday)) }}</td>
-                                                        <td>{{ $member->serviceInterest['short_code'] }}</td>
+                                                        <td>@if(!is_null($member['birthday'])) {{ date('jS M', strtotime($member->birthday)) }} @else {{ ('Not set')}} @endif</td>
+                                                        <td>@if(!is_null($member['service_interest_id'])) {{ $member->serviceInterest['short_code'] }} @else {{ ('Not set')}} @endif</td>
                                                     </tr>
                                                 @empty
                                                     <tr>
@@ -299,7 +299,7 @@
                                         <tbody>
                                             <tr>
                                                 <td>Service Attends</td>
-                                                <td>{{ $member->serviceInterest['name'] }}</td>
+                                                <td>@if(!is_null($member['service_interest_id'])) {{ $member->serviceInterest['name'] }} @else {{ ('Not set')}} @endif</td>
                                             </tr>
                                             <tr>
                                                 <td>Workforce Interest</td>
