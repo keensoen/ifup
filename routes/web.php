@@ -1,84 +1,11 @@
 <?php
 
-use Illuminate\Support\Facades\Http;
+
+Auth::routes();
 
 Route::get('/', function () {
     return redirect()->route('login');
 });
-
-// Route::get('sends', function(){
-//     $mobileNumber = "08027579193";
-
-//     //Sender ID,While using route4 sender id should be 6 characters long.
-//     $senderId = "keensoen";
-
-//     //Your message to send, Add URL encoding here.
-//     $message = urlencode("Test message");
-
-//     //Define route 
-//     $routing = "2";
-//     //Prepare you post parameters
-//     $postData = array(
-//         'sender' => $senderId,
-//         'to' => $mobileNumber,
-//         'message' => $message,
-//         'type'  => 0,
-//         'routing' => $routing,
-//         'token' => 'LLaOCtzf1dfndnDPQ5c1latmZ2aZ3RzZkCOnTqIV00wO4xuumh56mUpTZW84wZn0NERgc5qvUWPads2Reqv7h3XIPKgjbuAAY2qn'
-//     );
-
-//     //API URL
-//     $url="https://smartsmssolutions.com/api/json.php?";
-
-//     // init the resource
-//     $ch = curl_init();
-//     curl_setopt_array($ch, array(
-//         CURLOPT_URL => $url,
-//         CURLOPT_RETURNTRANSFER => true,
-//         CURLOPT_POST => true,
-//         CURLOPT_POSTFIELDS => $postData
-//         //,CURLOPT_FOLLOWLOCATION => true
-//     ));
-
-
-//     //Ignore SSL certificate verification
-//     curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-//     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-
-
-//     //get response
-//     $output = curl_exec($ch);
-
-//     //Print error if any
-//     if(curl_errno($ch))
-//     {
-//         echo 'error:' . curl_error($ch);
-//     }
-
-//     curl_close($ch);
-//     return $output;
-// });
-
-Route::get('sms_send', function(){
-
-    $message = urlencode('Test message two 2222 333');
-    $sender = 'keensoen';
-    $to = '08027579193,08119663516';
-    $token = 'LLaOCtzf1dfndnDPQ5c1latmZ2aZ3RzZkCOnTqIV00wO4xuumh56mUpTZW84wZn0NERgc5qvUWPads2Reqv7h3XIPKgjbuAAY2qn';
-    $routing = 3;
-    $type = 0;
-    $baseurl = 'https://smartsmssolutions.com/api/json.php?';
-    $sendsms = $baseurl.'message='.$message.'&to='.$to.'&sender='.$sender.'&type='.$type.'&routing='.$routing.'&token='.$token;
-
-    $response = file_get_contents($sendsms);
-
-    return $response;
-
-    // return Http::get('https://smartsmssolutions.com/api/json.php?&username=dansesu&password=dansesugh&sender=keensoen&to=07034608345&message=message');
-    //return sendSmsPost();
-});
-
-Auth::routes();
 
 Route::get('dashboard', 'HomeController@index')->name('home');
 
