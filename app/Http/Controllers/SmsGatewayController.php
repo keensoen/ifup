@@ -18,7 +18,14 @@ class SmsGatewayController extends Controller
         $flag = true;
         $model = SmsGateway::orderBy('created_at', 'desc');
         $gateways = authRole($model, auth()->user());
-        $organization = Organization::whereId(auth()->user()->organization_id)->pluck('parish', 'id')->all();
+        
+        if(auth()->user()->hasRole('super-admin')) {
+            $organization = Organization::pluck('parish', 'id')->all();
+        }
+        else {
+            $organization = Organization::whereId(auth()->user()->organization_id)->pluck('parish', 'id')->all();
+        }
+        
         return view('general.gateway', compact('gateways', 'organization', 'flag'));
     }
 
