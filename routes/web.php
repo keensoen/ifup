@@ -3,8 +3,30 @@
 
 Auth::routes();
 
-Route::get('/', function () {
-    return redirect()->route('login');
+Route::get('/', 'LandingController@index')->name('index');
+
+Route::get('ussd', function(){
+    $baseurl = 'https://smartsmssolutions.com/api/ussd.php?';
+    $ussdArray = array (
+    'ussd'=> '',
+    'simserver_token' => 'SIMSERVER_TOKEN_HERE',
+    'token' =>'TOKEN_HERE'
+    );
+
+    $params = http_build_query($ussdArray);
+    $ch = curl_init(); 
+
+    curl_setopt($ch, CURLOPT_URL,$baseurl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+
+    $response = curl_exec($ch);
+
+    curl_close($ch);
+
+    return $response; // response code
+
 });
 
 Route::get('dashboard', 'HomeController@index')->name('home');

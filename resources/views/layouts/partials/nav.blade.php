@@ -1,6 +1,6 @@
 <aside class="page-sidebar">
     <div class="page-logo" align="center">
-        <a href="{{url('/')}}" class="page-logo-link press-scale-down align-items-center position-relative">
+        <a href="{{url('index')}}" class="page-logo-link press-scale-down align-items-center position-relative">
             <img src="{{ URL::to('img/logo.png') }}" style="width:100px;height:50px;" alt="efellowUP" aria-roledescription="logo">
         </a>
     </div>
@@ -90,6 +90,11 @@
                             <span class="nav-link-text" data-i18n="nav.members_attendance">Attendance</span>
                         </a>
                     </li>
+                    <li class="{{ Request::is('') ? 'active' : ''}}">
+                        <a href="" title="Member HeatMap" data-filter-tags="member eyebird">
+                            <span class="nav-link-text" data-i18n="nav.member_eyebirds">Heat Map</span>
+                        </a>
+                    </li>
                 </ul>
             </li>
             <li class="{{
@@ -155,7 +160,7 @@
                 </a>
                 <ul>
                     <li class="{{ Request::is('') ? 'active' : ''}}">
-                    <a href="" title="Push Notification" data-filter-tags="miscellaneous push notification">
+                        <a href="" title="Push Notification" data-filter-tags="miscellaneous push notification">
                             <span class="nav-link-text" data-i18n="nav.miscellaneous_push_notification">Push Notification</span>
                         </a>
                     </li>

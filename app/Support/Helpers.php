@@ -84,7 +84,8 @@ if(!function_exists('autoSendSMS')) {
             {
                 $baseurl = $gateway['url'];
                 $signature = $gateway['signature'];
-                $sender = $gateway['sender_id'];
+                //$sender = $gateway['sender_id'];
+                $sender = 'eFellowUP'; // $gateway['sender_id'];
 
                 if(!is_null($msg_temp)) {
                     $message = $msg_temp['message_temp'].' '.$signature ;
@@ -220,7 +221,8 @@ if(!function_exists('sendRegistrationSMS')) {
         if($gateway)
         {
             $baseurl = $gateway['url'];
-            $sender = $gateway['sender_id'];
+            //$sender = $gateway['sender_id'];
+            $sender = 'eFellowUP'; // $gateway['sender_id'];
 
             $recipient = $member['tel'];
 
@@ -285,7 +287,8 @@ if(!function_exists('resendSMS')) {
         $gateway = SmsGateway::whereOrganizationId($member['organization_id'])->first();
 
         $baseurl = $gateway['url'];
-        $sender = $gateway['sender_id'];
+        //$sender = $gateway['sender_id'];
+        $sender = 'eFellowUP'; // $gateway['sender_id'];
         $recipient = $member['tel'];
 
 
@@ -346,7 +349,7 @@ if(!function_exists('sendSmsPost')) {
     function sendSmsPost()
     {
         $message = 'Test message';
-        $senderid = 'keensoen';
+        $senderid = 'eFellowUP';
         $to = '07034608345';
         $token = 'ZGFuc2VzdTpkYW5zZXN1Z2g=';
         $baseurl = 'https://bulksms247.com/sms/api?action=send-sms&';

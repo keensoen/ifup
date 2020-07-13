@@ -329,9 +329,9 @@ class MemberController extends Controller
 
     public function import() 
     {
-        // $this->validate(request(), [
-        //     'file' => 'required|mimes:xls,xlsx,csv'
-        // ]);
+        $this->validate(request(), [
+            'file' => 'required|mimes:xls,xlsx,csv'
+        ]);
 
         if(request()->has('file')){
 

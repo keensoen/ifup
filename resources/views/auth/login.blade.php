@@ -22,7 +22,7 @@
                             Connecting everyone everywhere!!!
                         </small>
                     </h2>
-                    <a href="#" class="fs-lg fw-500 text-white opacity-70">Learn more &gt;&gt;</a>
+                    <a href="{{route('index')}}" class="fs-lg fw-500 text-white opacity-70">Learn more &gt;&gt;</a>
                     <div class="d-sm-flex flex-column align-items-center justify-content-center d-md-block">
                         <div class="px-0 py-1 mt-5 text-white fs-nano opacity-50">
                             Find us on social media
