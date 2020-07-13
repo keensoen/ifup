@@ -18,8 +18,7 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" type="text/css" href="{{ URL::to('fronts/css/style.css')}}">
     <link rel="stylesheet" type="text/css" href="{{ URL::to('fronts/css/responsive.css')}}">
-    <!-- Google Fonts -->
-    <link href="../../../../fonts.googleapis.com/cssca0e.css?family=Lato:100,300,400,700,900" rel="stylesheet">
+
     <!-- Color Switcher -->
     <link href="{{ URL::to('fronts/switcher/style1.css')}}" rel="stylesheet" id="colors">
     <!-- Favicon -->
