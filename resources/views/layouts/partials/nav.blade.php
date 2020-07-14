@@ -198,21 +198,25 @@
                             <span class="nav-link-text" data-i18n="nav.system_settings_salutations">Salutations</span>
                         </a>
                     </li>
+                    @role('super-admin')
                     <li class="{{ Request::is('organizations') || Request::is('organizations/*') ? 'active' : ''}}">
                         <a href="{{ route('organization')}}" title="Organizations" data-filter-tags="system settings organizations">
                             <span class="nav-link-text" data-i18n="nav.system_settings_organizations">Organizations</span>
                         </a>
                     </li>
+                    @endrole
                     <li class="{{ Request::is('service_types') || Request::is('service_types/*') ? 'active' : ''}}">
                         <a href="{{ route('servicetype') }}" title="Service Types" data-filter-tags="system settings sservice types">
                             <span class="nav-link-text" data-i18n="nav.system_settings_service_types">Service Types</span>
                         </a>
                     </li>
+                    @role('super-admin')
                     <li class="{{ Request::is('gateways') || Request::is('gateways/*') ? 'active' : ''}}">
                         <a href="{{ route('gateway')}}" title="SMS Gateways" data-filter-tags="system settings sms gateways">
                             <span class="nav-link-text" data-i18n="nav.system_settings_sms_gateways">SMS Gateways</span>
                         </a>
                     </li>
+                    @endrole
                     <li class="{{ Request::is('templates') || Request::is('templates/*') ? 'active' : ''}}">
                         <a href="{{ route('templates.index')}}" title="SMS Templates" data-filter-tags="system settings sms templates">
                             <span class="nav-link-text" data-i18n="nav.system_settings_sms_templates">SMS Templates</span>

@@ -327,15 +327,15 @@ class MemberController extends Controller
         return redirect()->route('comrades.show', $member['slug']);
     }
 
-    public function import() 
+    public function import(Request $request) 
     {
-        $this->validate(request(), [
-            'file' => 'required|mimes:xls,xlsx,csv'
-        ]);
+        // $this->validate($request, [
+        //     'import_file' => 'required|mimes:xls,xlsx,csv'
+        // ]);
 
-        if(request()->has('file')){
+        if(request()->has('import_file')){
 
-            $import = Excel::import(new MembersImport, request()->file('file'));
+            $import = Excel::import(new MembersImport, request()->file('import_file'));
 
             if ($import) {
                 return redirect()->route('comrades.index')->with('success', 'Members upload successfully!');

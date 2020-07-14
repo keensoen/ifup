@@ -90,10 +90,10 @@ class Member extends Model
 
     public static function code()
     {
-        $p = self::where('organization_id', auth()->user()->id)->max('id');
+        $p = self::where('organization_id', auth()->user()->id)->count();
         $prefix = Organization::whereId(auth()->user()->id)->pluck('reg_prefix')->first();
         $id = $p + 1;
-        $newId = $prefix . str_pad($id, 4, '0', STR_PAD_LEFT);
+        $newId = $prefix . str_pad($id, 5, '0', STR_PAD_LEFT);
         return $newId;
     }
 

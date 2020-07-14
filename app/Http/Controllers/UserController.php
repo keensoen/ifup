@@ -45,8 +45,14 @@ class UserController extends Controller
                 }
             }
         }
-        
-        $organizations = Organization::whereId(auth()->user()->organization_id)->pluck('parish', 'id')->all();
+
+        if(auth()->user()->hasRole('super-admin'))
+        {
+            $organizations = Organization::pluck('parish', 'id')->all();
+        }
+        else {
+            $organizations = Organization::whereId(auth()->user()->organization_id)->pluck('parish', 'id')->all();
+        }
 
         return view('user.index', compact('users', 'organizations', 'roles', 'members', 'flag'));
     }

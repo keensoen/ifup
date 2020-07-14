@@ -33,6 +33,11 @@
                             <form method="get" accept-charset="utf-8">
                                 <div class="form-group">
                                     <div class="input-group input-group-multi-transition">
+                                        <div class="input-group-append">
+                                            <a class="btn btn-primary text-center" href="{{route('comrades.create')}}">
+                                                <i class="fal fa-plus"></i> <span>New Member</span>
+                                            </a>
+                                        </div>
                                         <input type="text" readonly="" class="form-control" aria-label="" placeholder="">
                                         <input type="text" readonly="" class="form-control" aria-label="" placeholder="">
                                         <input type="text" readonly="" class="form-control" aria-label="Person name" placeholder="">
@@ -245,7 +250,7 @@
                                             @csrf
                                             <div class="form-group" style="align:center;margin-left:280px;">
                                                 <div class="input-group input-group-multi-transition">
-                                                    <input type="file" readonly="" name="file" class="form-control">
+                                                    <input type="file" readonly="true" name="import_file" class="form-control">
                                                     <div class="input-group-append">
                                                         <button class="btn btn-xs btn-success">Import Member Data</button>
                                                     </div>

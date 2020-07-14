@@ -20,7 +20,9 @@ class MembersImport implements ToModel, WithHeadingRow, WithBatchInserts, WithCh
             'first_name' => 'D2',
             'surname'   => 'E2',
             'birthday'  => 'F2',
-            'tel'   => 'G2'
+            'tel'   => 'G2',
+            'member_group_id'   => 'H2',
+            'service_interest_id'   => 'I2',
         ];
     }
 
@@ -35,6 +37,7 @@ class MembersImport implements ToModel, WithHeadingRow, WithBatchInserts, WithCh
             'birthday'      => $row['birthday'] ? $this->transformDate($row['birthday']) : NULL,
             'tel'           => $row['tel'],
             'member_group_id'   => $row['member_group_id'],
+            'service_interest_id'   => $row['service_interest_id'],
             'slug'      => Str::slug($row['first_name'].' '.$row['surname'], '-'),
         ]);
     }
