@@ -26,7 +26,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
-        $schedule->command('send:birthday --queue --force')->daily()->when(function() {
+        $schedule->command('send:birthday --queue --force')->everyMinute()->when(function() {
             return Cron::shouldIRun('send:birthday', 60);
           });
     }
