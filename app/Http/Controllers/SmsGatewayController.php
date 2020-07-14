@@ -18,7 +18,7 @@ class SmsGatewayController extends Controller
         $flag = true;
         $model = SmsGateway::orderBy('created_at', 'desc');
         $gateways = authRole($model, auth()->user());
-        
+
         if(auth()->user()->hasRole('super-admin')) {
             $organization = Organization::pluck('parish', 'id')->all();
         }
@@ -42,19 +42,19 @@ class SmsGatewayController extends Controller
     {
         $flag = false;
         
-        $gateway = SmsGateway::whereOrganizationId(auth()->user()->organization_id)->findOrFail($id);
+        $gateway = SmsGateway::findOrFail($id);
 
         $model = SmsGateway::orderBy('created_at', 'desc');
         $gateways = authRole($model, auth()->user());
 
-        $organization = Organization::whereId(auth()->user()->organization_id)->pluck('parish', 'id')->all();
+        $organization = Organization::pluck('parish', 'id')->all();
 
         return view('general.gateway', compact('gateways', 'gateway', 'organization', 'flag'));
     }
 
     public function update(Request $request, $id)
     {
-        $gateway = SmsGateway::whereOrganizationId(auth()->user()->organization_id)->findOrFail($id);
+        $gateway = SmsGateway::findOrFail($id);
         $gateway->update($request->all());
         return redirect()->route('gateway');
     }
