@@ -31,7 +31,7 @@
                                                     <img src="{{URL::to($member->photo)}}" class="rounded-circle shadow-2 img-thumbnail" height="120" width="120" alt="{{ $member['fullname']}}">
                                                 @endif
                                                 <h5 class="mb-0 fw-700 text-center mt-3">
-                                                    {{ $member['fullname'] }}
+                                                    @if(!is_null($member['salutation_id'])) {{ $member->salute['short_code'] }}  @endif {{ $member['fullname'] }}
                                                     <small class="text-white mb-0">
                                                         @if(!is_null($member['address']))
                                                             {{ $member['address'] }}
