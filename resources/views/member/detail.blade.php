@@ -40,7 +40,7 @@
                                                 </h5>
                                                 <div class="mt-4 text-white text-center demo">
                                                     <span>{{ $member->tel }}</span>&nbsp;&nbsp;<span>{{ $member->email }}</span><br />
-                                                    <span>Birthday - @if(!is_null($member['birthday'])) {{ date('jS F', strtotime($member->brithday)) }} @else {{ ('Not set')}} @endif</span>
+                                                    <span>Birthday - @if(!is_null($member['birthday'])) {{ date('jS F', strtotime($member->birthday)) }} @else {{ ('Not set')}} @endif</span>
                                                 </div>
                                             </div>
                                         </div>
