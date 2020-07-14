@@ -222,7 +222,7 @@ if(!function_exists('sendRegistrationSMS')) {
         {
             $baseurl = $gateway['url'];
             //$sender = $gateway['sender_id'];
-            $sender = 'eFellowUP'; // $gateway['sender_id'];
+            $sender = $gateway['sender_id'];
 
             $recipient = $member['tel'];
 
@@ -305,7 +305,7 @@ if(!function_exists('resendSMS')) {
             $msg = SmsTemplate::whereSmsTemplateId($message['sms_template_id'])->pluck('msg_temp')->first();
         }
         
-        $msgz = $msg.' '.$gateway['signature'];
+        $msgz = $msg;
 
         if(!is_null($gateway['token'])) {
             $sms_array = [

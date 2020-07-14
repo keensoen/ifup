@@ -55,8 +55,8 @@ class SmsLogController extends Controller
         if($gateway) 
         {
             $signature = $gateway['signature'];
-            $sender = 'eFellowUP'; // $gateway['sender_id'];
-            $message = $request->get('message').'. '.$signature;
+            $sender = $gateway['sender_id'];
+            $message = $request->get('message');
 
             if($request->get('recipient_check') == 'all') {
 
