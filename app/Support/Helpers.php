@@ -84,8 +84,7 @@ if(!function_exists('autoSendSMS')) {
             {
                 $baseurl = $gateway['url'];
                 $signature = $gateway['signature'];
-                //$sender = $gateway['sender_id'];
-                $sender = 'eFellowUP'; // $gateway['sender_id'];
+                $sender = $gateway['sender_id'];
 
                 if(!is_null($msg_temp)) {
                     $message = $msg_temp['message_temp'].' '.$signature ;
