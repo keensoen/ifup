@@ -2,7 +2,7 @@
 
 namespace App\Console;
 
-use Carbon\Carbon;
+use App\Crons as Cron;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -26,7 +26,9 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
-        $schedule->command('send:birthday --queue --force')->everyMinute();
+        $schedule->command('send:birthday')->everyMinute()->when(function() {
+            return Cron::shouldIRun('send:birthday', 1);
+          });
     }
 
     /**
@@ -39,19 +41,5 @@ class Kernel extends ConsoleKernel
         $this->load(__DIR__.'/Commands');
 
         require base_path('routes/console.php');
-    }
-
-    public static function shouldIRun($command, $minutes) {
-        $cron = Cron::find($command);
-        $now  = Carbon::now();
-        if ($cron && $cron->next_run > $now->timestamp) {
-            return false;
-        }
-        Cron::updateOrCreate(
-            ['command'  => $command],
-            ['next_run' => Carbon::now()->addMinutes($minutes)->timestamp,
-             'last_run' => Carbon::now()->timestamp]
-        );
-        return true;
     }
 }

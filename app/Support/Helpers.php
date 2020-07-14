@@ -87,7 +87,7 @@ if(!function_exists('autoSendSMS')) {
                 $sender = $gateway['sender_id'];
 
                 if(!is_null($msg_temp)) {
-                    $message = $msg_temp['message_temp'].' '.$signature ;
+                    $message = $msg_temp['message_temp'];
 
                     if(!is_null($gateway['token'])) {
                         $sms_array = [
