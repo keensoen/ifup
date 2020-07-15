@@ -11,7 +11,7 @@ class SendBirthdayWishes extends Command
      *
      * @var string
      */
-    protected $signature = 'send:birthday {--queue}';
+    protected $signature = 'send:birthday';
 
     /**
      * The console command description.
