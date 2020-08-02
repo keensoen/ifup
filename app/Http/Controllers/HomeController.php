@@ -53,8 +53,12 @@ class HomeController extends Controller
             $totalComments = MemberComment::whereMonth('created_at', $month)->count();
             $totalPrayers = PrayerRequest::whereMonth('created_at', $month)->count();
             $totalBirthday = Member::whereMonth('birthday', $month)->count();
-            $totalPresent = Member::has('attendances')->whereMonth('created_at', $month)->count();
-            $totalAbsent = Member::doesntHave('attendances')->whereMonth('created_at', $month)->count();
+            $totalPresent = Member::has('attendances')->with(['attendances' => function($q){
+                    $q->whereMonth('attendances.created_at', $month);
+                }])->count();
+            $totalAbsent = Member::doesntHave('attendances')->with(['attendances' => function($q){
+                    $q->whereMonth('attendances.created_at', $month);
+                }])->count();
 
             foreach (PrayerRequest::whereMonth('created_at', $month)->get(['prayer_point']) as $key => $item) {
                 $prayerData .= $item->prayer_point.' ';
@@ -71,13 +75,17 @@ class HomeController extends Controller
             
         }
         else {
-            $totalMembers = Member::whereMonth('created_at', $month)->whereOrganizationId(auth()->user()->organization_id)->count();
+            $totalMembers = Member::whereOrganizationId(auth()->user()->organization_id)->count();
             $totalUsers = User::whereOrganizationId(auth()->user()->organization_id)->whereHas('roles', function($q){ $q->where('roles.name', '<>', "Member"); })->count();
             $totalComments = MemberComment::whereMonth('created_at', $month)->whereOrganizationId(auth()->user()->organization_id)->count();
             $totalPrayers = PrayerRequest::whereMonth('created_at', $month)->whereOrganizationId(auth()->user()->organization_id)->count();
             $totalBirthday = Member::whereMonth('birthday', $month)->whereOrganizationId(auth()->user()->organization_id)->count();
-            $totalPresent = Member::has('attendances')->whereMonth('created_at', $month)->whereOrganizationId(auth()->user()->organization_id)->count();
-            $totalAbsent = Member::doesntHave('attendances')->whereMonth('created_at', $month)->whereOrganizationId(auth()->user()->organization_id)->count();
+            $totalPresent = Member::has('attendances')->with(['attendances' => function($q){
+                    $q->whereMonth('attendances.created_at', $month);
+                }])->whereOrganizationId(auth()->user()->organization_id)->count();
+            $totalAbsent = Member::doesntHave('attendances')->with(['attendances' => function($q){
+                    $q->whereMonth('attendances.created_at', $month);
+                }])->whereOrganizationId(auth()->user()->organization_id)->count();
             
             foreach(PrayerRequest::whereMonth('created_at', $month)->whereOrganizationId(auth()->user()->organization_id)->get(['prayer_point']) as $item) {
                 $prayerData .= $item->prayer_point.' ';
@@ -87,10 +95,10 @@ class HomeController extends Controller
                 $commentData .= $item->comment.' ';
             }
 
-            $upcomingBirthday = Member::whereOrganizationId(auth()->user()->organization_id)->whereMonth('created_at', $month)->whereMonth('birthday', $month)->get();
-            $absents = Member::doesntHave('attendances')->whereOrganizationId(auth()->user()->organization_id)->whereMonth('created_at', $month)->whereBetween('created_at', [$week, $today])->get();
+            $upcomingBirthday = Member::whereOrganizationId(auth()->user()->organization_id)->whereMonth('birthday', $month)->get();
+            $absents = Member::doesntHave('attendances')->whereOrganizationId(auth()->user()->organization_id)->whereBetween('created_at', [$week, $today])->get();
         }
-
+        
         return view('home', 
             compact(
                     'totalMembers', 
