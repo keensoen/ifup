@@ -57,6 +57,7 @@
                 Request::is('comrades') || Request::is('comrades/*') ||
                 Request::is('memberGroup') || Request::is('memberGroup/*') ||
                 Request::is('comments') ||
+                Request::is('heat-map') ||
                 Request::is('attendances') ||
                 Request::is('prayer_requests') ? 'active open': '' 
             }}">
@@ -92,7 +93,7 @@
                     </li>
                     <li class="{{ Request::is('heat-map') ? 'active' : ''}}">
                         <a href="{{ route('heat.map') }}" title="Member HeatMap" data-filter-tags="member eyebird">
-                            <span class="nav-link-text" data-i18n="nav.member_eyebirds">Heat Map</span>
+                            <span class="nav-link-text" data-i18n="nav.member_eyebirds">Member Location</span>
                         </a>
                     </li>
                 </ul>

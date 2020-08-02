@@ -19,6 +19,7 @@ use App\Http\Requests\MemberRequestForm;
 use Illuminate\Support\Facades\Hash;
 use App\Entities\MemberReport;
 use App\Imports\MembersImport;
+use Illuminate\Support\Facades\Storage;
 use Excel;
 
 class MemberController extends Controller
@@ -348,6 +349,15 @@ class MemberController extends Controller
 
     public function heatMap()
     {
-        return view('member.heat_map');
+        $members = Member::where('lat', '<>', null)->where('lng', '<>', null)->select('first_name', 'middle_name', 'surname', 'address','lat', 'lng')->get();
+        Storage::disk('public')->put('members.json', response()->json($members));
+        return view('member.heat_map', compact('members'));
+    }
+
+    public function heatMapJson()
+    {
+        $members = Member::where('lat', '<>', null)->where('lng', '<>', null)->select('lat', 'lng')->get();
+
+        return response()->json(['results' => $members], 200);
     }
 }

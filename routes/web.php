@@ -73,6 +73,7 @@ Route::post('restore-member/{slug}', 'MemberController@restoreMember')->name('m.
 Route::get('visit-feedback', 'MemberController@postVisitFeedback')->name('visit_feedback');
 Route::post('import', 'MemberController@import')->name('import');
 Route::get('heat-map', 'MemberController@heatMap')->name('heat.map');
+Route::get('memberJson', 'MemberController@heatMapJson')->name('heatJson');
 
 //Service Type routes
 Route::get('memberGroup', 'MemberGroupController@index')->name('memberGroup');
