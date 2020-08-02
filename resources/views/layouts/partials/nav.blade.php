@@ -90,8 +90,8 @@
                             <span class="nav-link-text" data-i18n="nav.members_attendance">Attendance</span>
                         </a>
                     </li>
-                    <li class="{{ Request::is('') ? 'active' : ''}}">
-                        <a href="" title="Member HeatMap" data-filter-tags="member eyebird">
+                    <li class="{{ Request::is('heat-map') ? 'active' : ''}}">
+                        <a href="{{ route('heat.map') }}" title="Member HeatMap" data-filter-tags="member eyebird">
                             <span class="nav-link-text" data-i18n="nav.member_eyebirds">Heat Map</span>
                         </a>
                     </li>

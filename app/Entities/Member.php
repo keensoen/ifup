@@ -39,6 +39,8 @@ class Member extends Model
         'member_link',
         'member_group_id',
         'photo',
+        'lat',
+        'lng',
         'slug',
     ];
 
@@ -90,8 +92,8 @@ class Member extends Model
 
     public static function code()
     {
-        $p = self::where('organization_id', auth()->user()->id)->count();
-        $prefix = Organization::whereId(auth()->user()->id)->pluck('reg_prefix')->first();
+        $p = self::where('organization_id', auth()->user()->organization_id)->count();
+        $prefix = Organization::whereId(auth()->user()->organization_id)->pluck('reg_prefix')->first();
         $id = $p + 1;
         $newId = $prefix . str_pad($id, 5, '0', STR_PAD_LEFT);
         return $newId;

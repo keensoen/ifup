@@ -740,6 +740,7 @@ class ComposerStaticInitd6b15c22767d0689f48ea5acf0b217ab
         'App\\Http\\Controllers\\Auth\\VerificationController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/VerificationController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
         'App\\Http\\Controllers\\HomeController' => __DIR__ . '/../..' . '/app/Http/Controllers/HomeController.php',
+        'App\\Http\\Controllers\\LandingController' => __DIR__ . '/../..' . '/app/Http/Controllers/LandingController.php',
         'App\\Http\\Controllers\\MemberCommentController' => __DIR__ . '/../..' . '/app/Http/Controllers/MemberCommentController.php',
         'App\\Http\\Controllers\\MemberController' => __DIR__ . '/../..' . '/app/Http/Controllers/MemberController.php',
         'App\\Http\\Controllers\\MemberDecisionController' => __DIR__ . '/../..' . '/app/Http/Controllers/MemberDecisionController.php',

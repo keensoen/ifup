@@ -81,7 +81,7 @@
                                     <td>
                                         @push('js')
                                             <script type="text/javascript">
-                                                var KEY = "AIzaSyB6S7aOQ9zNQyn57BzqoCKbQKQN7gwCAlY";
+                                                var KEY = "{{ config('app.API_KEY') }}";
                                                 var total = {{$item->count()}};
                                                 var i = 0;
 

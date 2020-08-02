@@ -15,6 +15,8 @@ return [
 
     'name' => env('APP_NAME', 'iFollowUP'),
 
+    'API_KEY' => env('API_KEY', 'AIzaSyB6S7aOQ9zNQyn57BzqoCKbQKQN7gwCAlY'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment

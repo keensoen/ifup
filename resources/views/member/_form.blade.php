@@ -102,7 +102,10 @@
     <div class="form-row form-group">
         <div class="col-12 mb-3">
             <label class="form-label" for="address">Home Address <span class="text-danger">*</span></label>
-            <textarea class="form-control  @error('address') is-invalid @enderror" id="address" name="address" placeholder="Home Address" required="">@if($flag){{ $member['address'] }} @else {{ old('address') }} @endif</textarea>
+            {{-- <textarea class="form-control  @error('address') is-invalid @enderror" id="address" name="address" placeholder="Home Address" required="">@if($flag){{ $member['address'] }} @else {{ old('address') }} @endif</textarea> --}}
+            <input type="text" class="form-control @error('address') is-invalid @enderror" name="address" id="address" placeholder="Home Address" required="" @if($flag) value="{{ $member['address'] }}" @else {{ old('address') }} @endif />
+            <input type="hidden" name="lat" id="lat" />
+            <input type="hidden" name="lng" id="lng" />
             @error('address')
                 <div class="invalid-feedback">
                     {{ $message }}
@@ -144,8 +147,8 @@
         <div class="col-4 mb-3">
             <label class="form-label" for="login_details">Create Login Details(Only for those with Smartphone)</label>
             <select class="custom-select" id="login_details" name="login_details">
-                <option value="false" selected="true">NO</option>
-                <option value="true" >Yes</option>
+                <option value="0" selected="true">NO</option>
+                <option value="1" >Yes</option>
             </select>
         </div>
     </div>

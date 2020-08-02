@@ -75,9 +75,10 @@ class MemberController extends Controller
         return view('member.create', compact('salutations', 'service_interests', 'flag', 'member_groups'));
     }
 
-    public function store(MemberRequestForm $request)
+    public function store(Request $request)
     {
         $input = $request->all();
+        //dd($request->all());
         $input['code'] = Member::code();
         $input['birthday'] = date('Y-m-d h:m:s', strtotime($input['birthday']));
         $input['organization_id'] = auth()->user()->organization_id;
@@ -149,7 +150,7 @@ class MemberController extends Controller
                 MemberComment::create($data);
             }
 
-            if($input['login_details'] && $member) {
+            if($input['login_details'] == '1' && $member) {
                 $user = new User();
                 $user->member_id = $member->id;
                 $user->organization_id = $member->organization_id;
@@ -343,5 +344,10 @@ class MemberController extends Controller
         }
 
         return redirect()->route('comrades.index')->with('error', 'An Error has occured!');
+    }
+
+    public function heatMap()
+    {
+        return view('member.heat_map');
     }
 }

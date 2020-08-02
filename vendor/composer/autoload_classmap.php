@@ -35,6 +35,7 @@ return array(
     'App\\Http\\Controllers\\Auth\\VerificationController' => $baseDir . '/app/Http/Controllers/Auth/VerificationController.php',
     'App\\Http\\Controllers\\Controller' => $baseDir . '/app/Http/Controllers/Controller.php',
     'App\\Http\\Controllers\\HomeController' => $baseDir . '/app/Http/Controllers/HomeController.php',
+    'App\\Http\\Controllers\\LandingController' => $baseDir . '/app/Http/Controllers/LandingController.php',
     'App\\Http\\Controllers\\MemberCommentController' => $baseDir . '/app/Http/Controllers/MemberCommentController.php',
     'App\\Http\\Controllers\\MemberController' => $baseDir . '/app/Http/Controllers/MemberController.php',
     'App\\Http\\Controllers\\MemberDecisionController' => $baseDir . '/app/Http/Controllers/MemberDecisionController.php',
