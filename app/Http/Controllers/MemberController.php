@@ -349,7 +349,7 @@ class MemberController extends Controller
 
     public function heatMap()
     {
-        $members = Member::where('lat', '<>', null)->where('lng', '<>', null)->select('first_name', 'middle_name', 'surname', 'address','lat', 'lng')->get();
+        $members = Member::where('lat', '<>', null)->where('lng', '<>', null)->whereOrganizationId(auth()->user()->organization_id)->select('first_name', 'middle_name', 'surname', 'address','lat', 'lng')->get();
         Storage::disk('public')->put('members.json', response()->json($members));
         return view('member.heat_map', compact('members'));
     }
