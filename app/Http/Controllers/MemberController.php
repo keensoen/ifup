@@ -147,8 +147,9 @@ class MemberController extends Controller
             
             if(!is_null($input['comment']) || !empty($input['comment'])) {
                 $commentData = Arr::only($input, 'comment');
-                $data = Arr::add($commentData, 'member_id', $member['id'], 'organization_id', auth()->user()->organization_id);
-                MemberComment::create($data);
+                $data = Arr::add($commentData, 'member_id', $member['id']);
+                $comData = Arr::add($data, 'organization_id', auth()->user()->organization_id);
+                MemberComment::create($comData);
             }
 
             if($input['login_details'] == '1' && $member) {
@@ -170,7 +171,7 @@ class MemberController extends Controller
             }
         });
 
-        return redirect()->route('comrades.index');
+        return redirect()->route('members.index');
     }
 
     public function show($slug)
@@ -193,7 +194,7 @@ class MemberController extends Controller
             $member_groups[$m->id] = Str::upper($m->name);
         }
 
-        $model = Member::with(['comments', 'serviceInterest', 'prayers']);
+        $model = Member::with(['comments', 'serviceInterest', 'prayers', 'salute']);
         $member = authRoleFindWithSlug($model, auth()->user(), $slug);
 
         $salutations = Salutation::pluck('short_code', 'id')->all();
@@ -268,7 +269,7 @@ class MemberController extends Controller
             $member->update($input);
         });
 
-        return redirect()->route('comrades.index');
+        return redirect()->route('members.index');
     }
 
     public function destroy($slug)
@@ -278,7 +279,7 @@ class MemberController extends Controller
       
         $member->delete();
 
-        return redirect()->route('comrades.index');
+        return redirect()->route('members.index');
     }
 
     public function restoreMember($slug)
@@ -340,11 +341,11 @@ class MemberController extends Controller
             $import = Excel::import(new MembersImport, request()->file('import_file'));
 
             if ($import) {
-                return redirect()->route('comrades.index')->with('success', 'Members upload successfully!');
+                return redirect()->route('members.index')->with('success', 'Members upload successfully!');
             }
         }
 
-        return redirect()->route('comrades.index')->with('error', 'An Error has occured!');
+        return redirect()->route('members.index')->with('error', 'An Error has occured!');
     }
 
     public function heatMap()

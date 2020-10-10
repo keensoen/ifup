@@ -51,8 +51,8 @@
           zoom: 4,
           center: new google.maps.LatLng(lati,longi),
           gestureHandling: 'greedy',
-          tilt: 80,
-          bearing: 30,
+          mapTypeControl: false,
+          zoomControl: true,
         });
 
       <?php for($i=0;$i<count($members);$i++) { ?>
@@ -66,5 +66,5 @@
       <?php }?>
     }
   </script>
-  <script defer src="https://maps.googleapis.com/maps/api/js?key={{config('app.API_KEY')}}&callback=initMap"></script>
+  <script defer src="https://maps.googleapis.com/maps/api/js?key={{config('app.API_KEY')}}&libraries=places&callback=initMap"></script>
 @endpush

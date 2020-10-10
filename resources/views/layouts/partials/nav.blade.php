@@ -54,7 +54,7 @@
                 </ul>
             </li>
             <li class="{{ 
-                Request::is('comrades') || Request::is('comrades/*') ||
+                Request::is('members') || Request::is('members/*') ||
                 Request::is('memberGroup') || Request::is('memberGroup/*') ||
                 Request::is('comments') ||
                 Request::is('heat-map') ||
@@ -71,8 +71,8 @@
                             <span class="nav-link-text" data-i18n="nav.member_member_group">Member Group</span>
                         </a>
                     </li>
-                    <li class="{{ Request::is('comrades') || Request::is('comrades/*') ? 'active': ''}} ">
-                        <a href="{{ route('comrades.index') }}" title="List" data-filter-tags="members member">
+                    <li class="{{ Request::is('members') || Request::is('members/*') ? 'active': ''}} ">
+                        <a href="{{ route('members.index') }}" title="List" data-filter-tags="members member">
                             <span class="nav-link-text" data-i18n="nav.member_new_member">Member Bank</span>
                         </a>
                     </li>

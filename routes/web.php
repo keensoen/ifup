@@ -67,8 +67,8 @@ Route::post('users/{id}/edit', 'UserController@update')->name('user.update');
 Route::post('users/{id}', 'UserController@destroy')->name('user.destroy');
 
 //Member route
-Route::resource('comrades', 'MemberController');
-Route::get('comrades/{q?}', 'MemberController@index')->name('member_search');
+Route::resource('members', 'MemberController');
+Route::get('members/{q?}', 'MemberController@index')->name('member_search');
 Route::post('restore-member/{slug}', 'MemberController@restoreMember')->name('m.restore');
 Route::get('visit-feedback', 'MemberController@postVisitFeedback')->name('visit_feedback');
 Route::post('import', 'MemberController@import')->name('import');

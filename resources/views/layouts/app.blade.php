@@ -82,10 +82,10 @@
         <a href="{{ route('send_sms') }}" class="menu-item btn" data-toggle="tooltip" data-placement="left" title="Send SMS">
             <i class="fal fa-envelope"></i>
         </a>
-        <a href="{{ route('comrades.index') }}" class="menu-item btn" data-toggle="tooltip" data-placement="left" title="Members">
+        <a href="{{ route('members.index') }}" class="menu-item btn" data-toggle="tooltip" data-placement="left" title="Members">
             <i class="fal fa-users"></i>
         </a>
-        <a href="{{ route('comrades.create') }}" class="menu-item btn" data-toggle="tooltip" data-placement="left" title="Add Member">
+        <a href="{{ route('members.create') }}" class="menu-item btn" data-toggle="tooltip" data-placement="left" title="Add Member">
             <i class="fal fa-user"></i>
         </a>
         <a href="{{ route('templates.index') }}" class="menu-item btn" data-toggle="tooltip" data-placement="left" title="SMS Templates">

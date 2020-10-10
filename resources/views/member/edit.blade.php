@@ -19,7 +19,7 @@
                     <h1 class="">Biodata</h1>
                 </div>
                 <div class="panel-content p-0">
-                    {!! Form::model($member, ['method' => 'PATCH', 'route' => ['comrades.update', $member['slug']], 'enctype' => 'multipart/form-data']) !!}
+                    {!! Form::model($member, ['method' => 'PATCH', 'route' => ['members.update', $member['slug']], 'enctype' => 'multipart/form-data']) !!}
                         @include('member._form')
                         <div class="panel-content border-faded border-left-0 border-right-0 border-bottom-0 d-flex flex-row align-items-center">
                             <button class="btn btn-primary ml-auto" type="submit">Modify Member</button>

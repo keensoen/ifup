@@ -19,7 +19,7 @@
                     <h1 class="">Biodata</h1>
                 </div>
                 <div class="panel-content p-0">
-                    <form class="needs-validation" novalidate autocomplete="off" method="POST" action="{{ route('comrades.store') }}" enctype="multipart/form-data">
+                    <form class="needs-validation" novalidate autocomplete="off" method="POST" action="{{ route('members.store') }}" enctype="multipart/form-data">
                         @csrf
                         @include('member._form')
                         <div class="panel-content border-faded border-left-0 border-right-0 border-bottom-0 d-flex flex-row align-items-center">

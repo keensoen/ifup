@@ -22,6 +22,7 @@ return array(
     'App\\Entities\\SmsGateway' => $baseDir . '/app/Entities/SmsGateway.php',
     'App\\Entities\\SmsLog' => $baseDir . '/app/Entities/SmsLog.php',
     'App\\Entities\\SmsTemplate' => $baseDir . '/app/Entities/SmsTemplate.php',
+    'App\\Entities\\TemplateType' => $baseDir . '/app/Entities/TemplateType.php',
     'App\\Entities\\VisitType' => $baseDir . '/app/Entities/VisitType.php',
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',
     'App\\Http\\Controllers\\Api\\AppController' => $baseDir . '/app/Http/Controllers/Api/AppController.php',

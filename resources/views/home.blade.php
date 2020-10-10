@@ -231,7 +231,7 @@
         prayerChart.data(prayerData, {
             mode: "byWord",
             maxItems: 150,
-            ignoreItems: ['a', "the",'father', 'my', "and","he","or", "of","in","thy", 'wife', 'husband', 'okechukwu', 'daniel', 'sesughter', 'chidinma', 'gladys', 'to', 'me', 'will', 'you', 'he', 'him', 'for', 'i', 'see', 'let','father', 'please', 'your', 'us', 'with', 'her', 'she', 'said', 'at', 'any', 'call', 'by', 'have', 'has', 'their', 'ieren', 'this', 'all', 'lord', 'as']
+            ignoreItems: ['a', 'god', 'them', 'is', "the",'father', 'self', 'yourself', 'myself', 'my', "and","he","or", "of","in","thy",  'to', 'me', 'will', 'you', 'he', 'him', 'for', 'i', 'see', 'let','father', 'please', 'your', 'us', 'with', 'her', 'she', 'said', 'at', 'any', 'call', 'by', 'have', 'has', 'their', 'this', 'all', 'lord', 'as']
         });
         
         prayerChart.angles([0]);
@@ -248,7 +248,7 @@
         commentChart.data(commentData, {
             mode: "byWord",
             maxItems: 150,
-            ignoreItems: ["the", "and","he","or", "of","in","thy", 'self', 'yourself', 'myself']
+            ignoreItems: ['a', 'god', 'them', 'is', "the",'father', 'my', "and","he","or", "of","in","thy",  'to', 'me', 'will', 'you', 'he', 'him', 'for', 'i', 'see', 'let','father', 'please', 'your', 'us', 'with', 'her', 'she', 'said', 'at', 'any', 'call', 'by', 'have', 'has', 'their', 'this', 'all', 'lord', 'as', 'self', 'yourself', 'myself']
         });
 
         commentChart.angles([0]);

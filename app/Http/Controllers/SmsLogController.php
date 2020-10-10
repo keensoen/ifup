@@ -63,7 +63,7 @@ class SmsLogController extends Controller
                 if(auth()->user()->hasRole('supper-admin'))
                 {
                     $recipient = Member::pluck('tel')->all();
-                    $sender = 'SuperAdmin';
+                    $sender = 'eFellowUP';
                     
                     $sms = sendSMSx($sender, $recipient, $message);
                     

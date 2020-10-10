@@ -34,7 +34,7 @@
                                 <div class="form-group">
                                     <div class="input-group input-group-multi-transition">
                                         <div class="input-group-append">
-                                            <a class="btn btn-primary text-center" href="{{route('comrades.create')}}">
+                                            <a class="btn btn-primary text-center" href="{{route('members.create')}}">
                                                 <i class="fal fa-plus"></i> <span>New Member</span>
                                             </a>
                                         </div>
@@ -91,7 +91,7 @@
                                                 @endif
                                             </td>
                                             <td style="width:200px;">
-                                                <a href="{{ route('comrades.show', $member->slug) }}">{{ $member['fullname'] }}</a>
+                                                <a href="{{ route('members.show', $member->slug) }}">{{ $member['fullname'] }}</a>
                                             </td>
                                             <td>{{ $member['tel'] }}</td>
                                             <td>
@@ -243,7 +243,7 @@
                         @else
                             <div class="alert alet-warning text-center">
                                 <span style="font-size:15px;">No record Found! 
-                                    <a href="{{ route('comrades.create') }}"> click here to add</a> 
+                                    <a href="{{ route('members.create') }}"> click here to add</a> 
                                     <h2>OR</h2>
                                     <div class="row text-center" style="align-items:center;">
                                         <form action="{{ route('import') }}" method="POST" enctype="multipart/form-data">
@@ -259,7 +259,7 @@
                                         </form>
                                     </div>
                                     <h2>OR</h2>
-                                    <a href="{{ route('comrades.index') }}">Return to Member Pool</a></span>
+                                    <a href="{{ route('members.index') }}">Return to Member Pool</a></span>
                             </div>
                         @endif
                     </div>

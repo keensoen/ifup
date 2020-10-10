@@ -91,12 +91,12 @@
                                             <button type="submit" id="deleteTrigger" class="btn btn-sm btn-outline-danger mr-2" onclick="return confirm('Are you sure to restore');"><i class="fal fa-exchange"></i> Restore Record</button>
                                         </form>
                                     @else
-                                        <form method="POST", action="{{ route('comrades.destroy', $member['slug']) }}">
+                                        <form method="POST", action="{{ route('members.destroy', $member['slug']) }}">
                                             {{method_field('DELETE')}}
                                             {{csrf_field()}}
                                             <button type="submit" id="deleteTrigger" class="btn btn-sm btn-outline-danger mr-2" onclick="return confirm('Are you sure to delete');"><i class="fal fa-times"></i> Archive Record</button>
                                         </form>
-                                        <a href='{{ route('comrades.edit', $member['slug']) }}' class='btn btn-sm btn-outline-primary mr-2' title='Edit'>
+                                        <a href='{{ route('members.edit', $member['slug']) }}' class='btn btn-sm btn-outline-primary mr-2' title='Edit'>
                                             <i class="fal fa-edit"></i> Edit
                                         </a>
                                         <a href='javascript:void(0);' data-toggle="modal" data-target=".default-example-modal-right-sm" class='btn btn-sm btn-outline-primary mr-2' title='Feedback'>

@@ -1,6 +1,0 @@
-HTTP/1.0 200 OK
-Cache-Control: no-cache, private
-Content-Type:  application/json
-Date:          Sun, 02 Aug 2020 11:37:03 GMT
-
-[{"lat":"6.6420787","lng":"3.3632704"},{"lat":"6.6386675","lng":"3.346491899999999"}]

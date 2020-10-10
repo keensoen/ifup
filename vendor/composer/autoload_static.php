@@ -727,6 +727,7 @@ class ComposerStaticInitd6b15c22767d0689f48ea5acf0b217ab
         'App\\Entities\\SmsGateway' => __DIR__ . '/../..' . '/app/Entities/SmsGateway.php',
         'App\\Entities\\SmsLog' => __DIR__ . '/../..' . '/app/Entities/SmsLog.php',
         'App\\Entities\\SmsTemplate' => __DIR__ . '/../..' . '/app/Entities/SmsTemplate.php',
+        'App\\Entities\\TemplateType' => __DIR__ . '/../..' . '/app/Entities/TemplateType.php',
         'App\\Entities\\VisitType' => __DIR__ . '/../..' . '/app/Entities/VisitType.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
         'App\\Http\\Controllers\\Api\\AppController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/AppController.php',
