@@ -56,7 +56,7 @@
                         <form id="js-login" novalidate="" method="POST" action="{{ route('password.email') }}">
                             @csrf
                             <div class="form-group">
-                                <label class="form-label" for="username">Email</label>
+                                <label class="form-label" for="username">Your Email Address</label>
                                 <input id="login" type="email" placeholder="Enter Email" class="form-control form-control-md @error('email') is-invalid @enderror" name="login" value="{{ old('email') }}" required autofocus>
                                 @error('email')
                                     <div class="invalid-feedback"><strong>{{ $message }}</strong></div>

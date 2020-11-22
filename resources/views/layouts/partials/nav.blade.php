@@ -26,11 +26,10 @@
                         @endguest
                     </span>
                 </a>
-                <span class="d-inline-block text-truncate text-truncate-sm">
+                <span class="d-inline-block text-truncate text-truncate-sm mt-3">
                     @if(auth()->user()->getRoleNames())
-                        @foreach (auth()->user()->getRoleNames() as $role)
-                            {{ \Str::ucfirst(\Str::of($role)->replace('-', ' ')) }}
-                        @endforeach
+                        <span class="badge badge-info p-2">{{ Str::of(auth()->user()->getRoleNames())->replaceMatches('/[\W]/', '') }}</span>
+                        {{--  {{ \Str::ucfirst(\Str::of(auth()->user()->getRoleNames())->replace('-', ' ')) }}  --}}
                     @endif
                 </span>
             </div>
@@ -76,26 +75,28 @@
                             <span class="nav-link-text" data-i18n="nav.member_new_member">Member Bank</span>
                         </a>
                     </li>
-                    <li class="{{ Request::is('prayer_requests') ? 'active': '' }}">
-                        <a href="{{ route('prayer_request')}}" title="Prayers" data-filter-tags="members prayers">
-                            <span class="nav-link-text" data-i18n="nav.members_prayers">Prayers</span>
-                        </a>
-                    </li>
-                    <li class="{{ Request::is('comments') ? 'active' : '' }}">
-                        <a href="{{ route('comment') }}" title="Comments" data-filter-tags="members comments">
-                            <span class="nav-link-text" data-i18n="nav.members_comments">Comments</span>
-                        </a>
-                    </li>
-                    <li class="{{ Request::is('attendances') ? 'active' : '' }}">
-                        <a href="{{ route('attendance') }}" title="Attendance" data-filter-tags="members attendance">
-                            <span class="nav-link-text" data-i18n="nav.members_attendance">Attendance</span>
-                        </a>
-                    </li>
-                    <li class="{{ Request::is('heat-map') ? 'active' : ''}}">
-                        <a href="{{ route('heat.map') }}" title="Member HeatMap" data-filter-tags="member eyebird">
-                            <span class="nav-link-text" data-i18n="nav.member_eyebirds">Member Location</span>
-                        </a>
-                    </li>
+                    @if(auth()->user()->hasRole('church-admin') || auth()->user()->hasRole('parish-pastor') || auth()->user()->hasRole('super-admin'))
+                        <li class="{{ Request::is('prayer_requests') ? 'active': '' }}">
+                            <a href="{{ route('prayer_request')}}" title="Prayers" data-filter-tags="members prayers">
+                                <span class="nav-link-text" data-i18n="nav.members_prayers">Prayers</span>
+                            </a>
+                        </li>
+                        <li class="{{ Request::is('comments') ? 'active' : '' }}">
+                            <a href="{{ route('comment') }}" title="Comments" data-filter-tags="members comments">
+                                <span class="nav-link-text" data-i18n="nav.members_comments">Comments</span>
+                            </a>
+                        </li>
+                        <li class="{{ Request::is('attendances') ? 'active' : '' }}">
+                            <a href="{{ route('attendance') }}" title="Attendance" data-filter-tags="members attendance">
+                                <span class="nav-link-text" data-i18n="nav.members_attendance">Attendance</span>
+                            </a>
+                        </li>
+                        <li class="{{ Request::is('heat-map') ? 'active' : ''}}">
+                            <a href="{{ route('heat.map') }}" title="Member HeatMap" data-filter-tags="member eyebird">
+                                <span class="nav-link-text" data-i18n="nav.member_eyebirds">Member Location</span>
+                            </a>
+                        </li>
+                    @endif
                 </ul>
             </li>
             <li class="{{
@@ -123,60 +124,62 @@
                     </li>
                 </ul>
             </li>
-            <li class="{{
-                Request::is('members/*') || Request::is('analysis/*') || Request::is('attendance/*') ? 'active open' : ''}}">
-                <a href="javascript::void(0)" title="Reports" data-filter-tags="reports">
-                    <i class="fal fa-chart-bar"></i>
-                    <span class="nav-link-text" data-i18n="nav.reports">Reports</span>
-                </a>
-                <ul>
-                    <li class="{{ 
-                        Request::is('*/birthdays') || Request::is('*/new-residents') ||
-                        Request::is('*/non-baptized') || Request::is('*/serviceType') ||
-                        Request::is('*/serviceType') || Request::is('*/contacts') ||
-                        Request::is('*/like-workforce') || Request::is('*/like-membership') ||
-                        Request::is('*/archived') || Request::is('*/like-visited') ? 'active' : ''
-                     }}">
-                        <a href="{{ route('breports') }}" title="Members" data-filter-tags="reports members">
-                            <span class="nav-link-text" data-i18n="nav.reports_members">Members</span>
-                        </a>
-                    </li>
-                    <li class="{{ Request::is('*/present') || Request::is('*/absent') ? 'active' : ''}}">
-                        <a href="{{ route('present')}}" title="Attendance" data-filter-tags="reports attendance">
-                            <span class="nav-link-text" data-i18n="nav.reports_attendance">Attendance</span>
-                        </a>
-                    </li>
-                    <li class="{{ Request::is('*/prayers') || Request::is('*/feedback') ? 'active' : ''}}">
-                        <a href="{{ route('panalysis')}}" title="Analysis" data-filter-tags="reports analysis">
-                            <span class="nav-link-text" data-i18n="nav.reports_analysis">Analysis & Forcast</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-            <li class="{{
-                Request::is('miscellaneous') || Request::is('prayer-room/*') ? 'active open' : ''}}">
-                <a href="javascript::void(0)" title="Miscellaneous" data-filter-tags="miscellaneous">
-                    <i class="fal fa-globe"></i>
-                    <span class="nav-link-text" data-i18n="nav.miscellaneous">Miscellaneous</span>
-                </a>
-                <ul>
-                    <li class="{{ Request::is('') ? 'active' : ''}}">
-                        <a href="" title="Push Notification" data-filter-tags="miscellaneous push notification">
-                            <span class="nav-link-text" data-i18n="nav.miscellaneous_push_notification">Push Notification</span>
-                        </a>
-                    </li>
-                    <li class="{{ Request::is('*/prayer-room') || Request::is('*/prayer-room') ? 'active' : ''}}">
-                        <a href="{{ route('prayer_room') }}" title="Prayer Room" data-filter-tags="miscellaneous prayer room">
-                            <span class="nav-link-text" data-i18n="nav.miscellaneous_prayer_room">Prayer Room</span>
-                        </a>
-                    </li>
-                    <li class="{{ Request::is('') ? 'active' : ''}}">
-                        <a href="" title="Organizations" data-filter-tags="miscellaneous organizations">
-                            <span class="nav-link-text" data-i18n="nav.system_settings_organizations">Not Baptized</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
+            @if(auth()->user()->hasRole('church-admin') || auth()->user()->hasRole('parish-pastor') || auth()->user()->hasRole('super-admin'))
+                <li class="{{
+                    Request::is('members/*') || Request::is('analysis/*') || Request::is('attendance/*') ? 'active open' : ''}}">
+                    <a href="javascript::void(0)" title="Reports" data-filter-tags="reports">
+                        <i class="fal fa-chart-bar"></i>
+                        <span class="nav-link-text" data-i18n="nav.reports">Reports</span>
+                    </a>
+                    <ul>
+                        <li class="{{ 
+                            Request::is('*/birthdays') || Request::is('*/new-residents') ||
+                            Request::is('*/non-baptized') || Request::is('*/serviceType') ||
+                            Request::is('*/serviceType') || Request::is('*/contacts') ||
+                            Request::is('*/like-workforce') || Request::is('*/like-membership') ||
+                            Request::is('*/archived') || Request::is('*/like-visited') ? 'active' : ''
+                        }}">
+                            <a href="{{ route('breports') }}" title="Members" data-filter-tags="reports members">
+                                <span class="nav-link-text" data-i18n="nav.reports_members">Members</span>
+                            </a>
+                        </li>
+                        <li class="{{ Request::is('*/present') || Request::is('*/absent') ? 'active' : ''}}">
+                            <a href="{{ route('present')}}" title="Attendance" data-filter-tags="reports attendance">
+                                <span class="nav-link-text" data-i18n="nav.reports_attendance">Attendance</span>
+                            </a>
+                        </li>
+                        <li class="{{ Request::is('*/prayers') || Request::is('*/feedback') ? 'active' : ''}}">
+                            <a href="{{ route('panalysis')}}" title="Analysis" data-filter-tags="reports analysis">
+                                <span class="nav-link-text" data-i18n="nav.reports_analysis">Analysis & Forcast</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="{{
+                    Request::is('miscellaneous') || Request::is('prayer-room/*') ? 'active open' : ''}}">
+                    <a href="javascript::void(0)" title="Miscellaneous" data-filter-tags="miscellaneous">
+                        <i class="fal fa-globe"></i>
+                        <span class="nav-link-text" data-i18n="nav.miscellaneous">Miscellaneous</span>
+                    </a>
+                    <ul>
+                        <li class="{{ Request::is('') ? 'active' : ''}}">
+                            <a href="" title="Push Notification" data-filter-tags="miscellaneous push notification">
+                                <span class="nav-link-text" data-i18n="nav.miscellaneous_push_notification">Push Notification</span>
+                            </a>
+                        </li>
+                        <li class="{{ Request::is('*/prayer-room') || Request::is('*/prayer-room') ? 'active' : ''}}">
+                            <a href="{{ route('prayer_room') }}" title="Prayer Room" data-filter-tags="miscellaneous prayer room">
+                                <span class="nav-link-text" data-i18n="nav.miscellaneous_prayer_room">Prayer Room</span>
+                            </a>
+                        </li>
+                        <li class="{{ Request::is('') ? 'active' : ''}}">
+                            <a href="" title="Organizations" data-filter-tags="miscellaneous organizations">
+                                <span class="nav-link-text" data-i18n="nav.system_settings_organizations">Not Baptized</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            @endif
             <li class="{{
                 Request::is('users') || Request::is('users/*') ||
                 Request::is('salutations') || Request::is('salutations/*') ||
@@ -189,16 +192,18 @@
                     <span class="nav-link-text" data-i18n="nav.system_settings">System Settings</span>
                 </a>
                 <ul>
+                    @if(auth()->user()->hasRole('church-admin') || auth()->user()->hasRole('parish-pastor') || auth()->user()->hasRole('super-admin'))
                     <li class="{{ Request::is('users') || Request::is('users/*') ? 'active' : ''}}">
-                    <a href="{{ route('user') }}" title="Users" data-filter-tags="system settings users">
-                            <span class="nav-link-text" data-i18n="nav.system_settings_users">Users</span>
-                        </a>
-                    </li>
-                    <li class="{{ Request::is('salutations') || Request::is('salutations/*') ? 'active' : ''}}">
-                        <a href="{{ route('salutes')}}" title="Salutations" data-filter-tags="system settings salutations">
-                            <span class="nav-link-text" data-i18n="nav.system_settings_salutations">Salutations</span>
-                        </a>
-                    </li>
+                        <a href="{{ route('user') }}" title="Users" data-filter-tags="system settings users">
+                                <span class="nav-link-text" data-i18n="nav.system_settings_users">Users</span>
+                            </a>
+                        </li>
+                        <li class="{{ Request::is('salutations') || Request::is('salutations/*') ? 'active' : ''}}">
+                            <a href="{{ route('salutes')}}" title="Salutations" data-filter-tags="system settings salutations">
+                                <span class="nav-link-text" data-i18n="nav.system_settings_salutations">Salutations</span>
+                            </a>
+                        </li>
+                    @endif
                     @role('super-admin')
                     <li class="{{ Request::is('organizations') || Request::is('organizations/*') ? 'active' : ''}}">
                         <a href="{{ route('organization')}}" title="Organizations" data-filter-tags="system settings organizations">
@@ -206,11 +211,13 @@
                         </a>
                     </li>
                     @endrole
-                    <li class="{{ Request::is('service_types') || Request::is('service_types/*') ? 'active' : ''}}">
-                        <a href="{{ route('servicetype') }}" title="Service Types" data-filter-tags="system settings sservice types">
-                            <span class="nav-link-text" data-i18n="nav.system_settings_service_types">Service Types</span>
-                        </a>
-                    </li>
+                    @if(auth()->user()->hasRole('church-admin') || auth()->user()->hasRole('parish-pastor') || auth()->user()->hasRole('super-admin'))
+                        <li class="{{ Request::is('service_types') || Request::is('service_types/*') ? 'active' : ''}}">
+                            <a href="{{ route('servicetype') }}" title="Service Types" data-filter-tags="system settings sservice types">
+                                <span class="nav-link-text" data-i18n="nav.system_settings_service_types">Service Types</span>
+                            </a>
+                        </li>
+                    @endif
                     @role('super-admin')
                     <li class="{{ Request::is('gateways') || Request::is('gateways/*') ? 'active' : ''}}">
                         <a href="{{ route('gateway')}}" title="SMS Gateways" data-filter-tags="system settings sms gateways">

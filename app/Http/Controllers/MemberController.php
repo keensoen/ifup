@@ -261,8 +261,8 @@ class MemberController extends Controller
 
             // $latLong = Member::getLatLong($request->address);
             // dd($latLong);
-            // $input['lat'] = $latLong['lat']? $latLong['lat']:'NULL';
-            // $input['lng'] = $latLong['lng']? $latLong['lng']:'Not found';
+            $input['lat'] = $latLong['lat']? $latLong['lat']:'NULL';
+            $input['lng'] = $latLong['lng']? $latLong['lng']:'Not found';
         }
 
         DB::transaction(function() use($input, $member) {

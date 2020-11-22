@@ -387,7 +387,7 @@ if(!function_exists('sendSmsGet')) {
         $senderid = urlencode('keensoen');
         $to = '2347034608345';
         $token = 'LLaOCtzf1dfndnDPQ5c1latmZ2aZ3RzZkCOnTqIV00wO4xuumh56mUpTZW84wZn0NERgc5qvUWPads2Reqv7h3XIPKgjbuAAY2qn';
-        $routing = 3;
+        $routing = 4;
         $type = 0;
         $baseurl = 'https://smartsmssolutions.com/api/json.php?';
         $sendsms = $baseurl.'message='.$message.'&to='.$to.'&sender='.$senderid.'&type='.$type.'&routing='.$routing.'&token='.$token;

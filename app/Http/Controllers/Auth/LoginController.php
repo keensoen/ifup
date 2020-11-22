@@ -70,7 +70,11 @@ class LoginController extends Controller
         {
             return redirect()->route('home');
         } 
-        elseif ($user->hasRole('follow-up-team') && $user->status === 1) 
+        elseif ($user->hasRole('followup-team') && $user->status === 1) 
+        {
+            return redirect()->route('home');
+        }
+        elseif ($user->hasRole('prayer-warrior') && $user->status === 1) 
         {
             return redirect()->route('home');
         }

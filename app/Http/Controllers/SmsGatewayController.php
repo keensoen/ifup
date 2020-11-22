@@ -42,7 +42,7 @@ class SmsGatewayController extends Controller
     {
         $flag = false;
         
-        $gateway = SmsGateway::findOrFail($id);
+        $gateway = SmsGateway::with(['organization'])->findOrFail($id);
 
         $model = SmsGateway::orderBy('created_at', 'desc');
         $gateways = authRole($model, auth()->user());
