@@ -110,7 +110,7 @@ class UserController extends Controller
         $input = $request->all();
 
         $userData = Arr::except($input, ['role', 'password']);
-        $userData['password'] = Hash::make($request->get('password'));
+        $userData['password'] = bcrypt($request->get('password'));
         $user->update($userData);
 
         $uCheck = DB::table('model_has_roles')->whereModelId($user->id)->first();
