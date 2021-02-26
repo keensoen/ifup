@@ -257,13 +257,13 @@ class MemberController extends Controller
             $input['workforce_interest'] = Member::checkbox($input['workforce_interest']);
         }
 
-        if(request()->has('address')) {
+        // if(request()->has('address')) {
 
-            // $latLong = Member::getLatLong($request->address);
-            // dd($latLong);
-            $input['lat'] = $latLong['lat']? $latLong['lat']:'NULL';
-            $input['lng'] = $latLong['lng']? $latLong['lng']:'Not found';
-        }
+        //     // $latLong = Member::getLatLong($request->address);
+        //     // dd($latLong);
+        //     $input['lat'] = $latLong['lat']? $latLong['lat']:'NULL';
+        //     $input['lng'] = $latLong['lng']? $latLong['lng']:'NULL';
+        // }
 
         DB::transaction(function() use($input, $member) {
             $member->update($input);
